@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Decoded — Free UK Mortgage Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0f; --paper: #f5f0e8; --cream: #ede8dc;
+    --gold: #c8a84b; --gold-light: #e8d49a; --teal: #1a5c5c;
+    --red: #c0392b; --green: #1a6b3a; --border: #c8bfa8;
+    --muted: #7a7060; --card-bg: #faf7f2;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; min-height:100vh; }
+
+  header { background:var(--teal); color:var(--paper); padding:48px 40px 40px; position:relative; overflow:hidden; }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; border-radius:50%; background:rgba(200,168,75,0.12); }
+  header::after  { content:''; position:absolute; bottom:-80px; left:20%; width:200px; height:200px; border-radius:50%; background:rgba(200,168,75,0.07); }
+  .hi { max-width:960px; margin:0 auto; position:relative; z-index:1; }
+  .eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:12px; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.2rem); font-weight:900; line-height:1.1; margin-bottom:14px; }
+  header h1 span { color:var(--gold); }
+  header p { color:rgba(245,240,232,0.75); font-size:15px; max-width:600px; font-weight:300; }
+
+  .tab-nav { background:var(--ink); display:flex; overflow-x:auto; scrollbar-width:none; position:sticky; top:0; z-index:100; border-bottom:2px solid var(--gold); }
+  .tab-nav::-webkit-scrollbar { display:none; }
+  .tb { flex:0 0 auto; padding:12px 16px; background:none; border:none; color:rgba(245,240,232,0.4); font-family:'DM Sans',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .2s; }
+  .tb:hover { color:var(--gold-light); }
+  .tb.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  main { max-width:960px; margin:0 auto; padding:40px 24px 80px; }
+  .panel { display:none; animation:fadeIn .3s ease; }
+  .panel.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  .section-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; margin-bottom:6px; color:var(--teal); }
+  .section-sub { color:var(--muted); font-size:14px; margin-bottom:28px; font-weight:300; max-width:660px; }
+
+  .ig { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:14px; margin-bottom:26px; }
+  .field { display:flex; flex-direction:column; gap:5px; }
+  .field label { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .field input, .field select { padding:9px 13px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:6px; font-family:'DM Mono',monospace; font-size:14px; color:var(--ink); transition:border-color .2s; outline:none; }
+  .field input:focus, .field select:focus { border-color:var(--teal); }
+
+  .sr { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:13px; margin:22px 0; }
+  .sc { background:var(--card-bg); border:1.5px solid var(--border); border-radius:10px; padding:16px 15px; position:relative; overflow:hidden; }
+  .sc::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .sc.gold::before{background:var(--gold)} .sc.teal::before{background:var(--teal)}
+  .sc.red::before{background:var(--red)}   .sc.green::before{background:var(--green)}
+  .sc.orange::before{background:#e67e22}   .sc.purple::before{background:#8e44ad}
+  .sl { font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
+  .sv { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--ink); line-height:1.1; }
+  .ss { font-size:12px; color:var(--muted); margin-top:4px; line-height:1.4; }
+
+  .cw { background:var(--card-bg); border:1.5px solid var(--border); border-radius:10px; padding:22px; margin:18px 0; }
+  .ct { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  canvas { width:100%!important; }
+
+  .amort-year { display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:12px; }
+  .amort-label { font-family:'DM Mono',monospace; width:50px; text-align:right; color:var(--muted); }
+  .amort-bar-wrap { flex:1; height:14px; background:#e8e2d4; border-radius:3px; overflow:hidden; display:flex; }
+  .amort-interest { background:var(--red); height:100%; }
+  .amort-capital  { background:var(--teal); height:100%; }
+  .amort-pct { font-family:'DM Mono',monospace; width:44px; color:var(--muted); font-size:11px; }
+
+  .ct2 { width:100%; border-collapse:collapse; margin:18px 0; border-radius:8px; overflow:hidden; }
+  .ct2 th { background:var(--teal); color:var(--paper); padding:9px 14px; font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; text-align:left; }
+  .ct2 td { padding:10px 14px; border-bottom:1px solid var(--border); font-size:13px; background:var(--card-bg); vertical-align:middle; }
+  .ct2 tr:last-child td { border-bottom:none; }
+  .ct2 .hi2 td { background:#e8f4f0; font-weight:600; color:var(--green); }
+  .ct2 .sav td { background:#fdf5e6; }
+  .ct2 .wrn td { background:#fdf0ec; }
+  .mono { font-family:'DM Mono',monospace; }
+
+  .ins { background:linear-gradient(135deg,rgba(26,92,92,.04),rgba(200,168,75,.08)); border:1.5px solid var(--gold); border-left:4px solid var(--gold); border-radius:8px; padding:16px 18px; margin:18px 0; font-size:14px; line-height:1.65; }
+  .ins strong { color:var(--teal); }
+  .ins-hdr { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .ins.wrn { border-color:var(--red); border-left-color:var(--red); background:linear-gradient(135deg,rgba(192,57,43,.04),rgba(200,168,75,.03)); }
+  .ins.wrn .ins-hdr { color:var(--red); }
+
+  .leg { display:flex; gap:18px; flex-wrap:wrap; margin-bottom:10px; }
+  .leg-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
+  .leg-dot { width:12px; height:12px; border-radius:2px; flex-shrink:0; }
+
+  .sd-band { display:flex; justify-content:space-between; align-items:center; padding:9px 13px; border-radius:6px; margin-bottom:5px; font-size:13px; background:var(--card-bg); border:1px solid var(--border); }
+  .sd-band.ab { background:#e8f4f0; border-color:var(--teal); font-weight:600; }
+  .sd-bl { color:var(--muted); font-size:12px; }
+  .svr-badge { display:inline-block; background:var(--red); color:white; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 9px; border-radius:4px; margin-left:8px; vertical-align:middle; }
+
+  @media(max-width:600px){
+    header{padding:28px 18px 24px} main{padding:20px 14px 60px}
+    .sv{font-size:1.15rem} .tb{padding:10px 12px;font-size:9.5px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hi">
+    <div class="eyebrow">Mortgage Decoded · Free Education Tool · 12 Calculators</div>
+    <h1>The Real Cost of<br><span>Your Mortgage</span></h1>
+    <p>Discover the hidden impact of interest, explore smarter strategies, and understand exactly what you're paying — and when. Free, no sign-up, built to educate not to sell.</p>
+    <p style="margin-top:10px;font-size:12px;color:rgba(245,240,232,0.4);font-family:'DM Mono',monospace;letter-spacing:0.06em">mortgagedecoded.co.uk</p>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <button class="tb active"  onclick="showTab('total',this)">① Total Cost</button>
+  <button class="tb" onclick="showTab('amort',this)">② Payment Split</button>
+  <button class="tb" onclick="showTab('extra',this)">③ Extra Payment</button>
+  <button class="tb" onclick="showTab('fixed',this)">④ Fixed vs Fixed</button>
+  <button class="tb" onclick="showTab('offset',this)">⑤ Offset vs Invest</button>
+  <button class="tb" onclick="showTab('stamp',this)">⑥ Stamp Duty</button>
+  <button class="tb" onclick="showTab('rent',this)">⑦ Rent vs Buy</button>
+  <button class="tb" onclick="showTab('rate',this)">⑧ Rate Sensitivity</button>
+  <button class="tb" onclick="showTab('erc',this)">⑨ Early Exit (ERC)</button>
+  <button class="tb" onclick="showTab('deposit',this)">⑩ Deposit Impact</button>
+  <button class="tb" onclick="showTab('inflation',this)">⑪ Inflation Adjuster</button>
+  <button class="tb" onclick="showTab('svr',this)">⑫ SVR Danger Zone</button>
+</nav>
+
+<main>
+
+<!-- ① TOTAL COST -->
+<div id="panel-total" class="panel active">
+  <h2 class="section-title">Total Mortgage Cost</h2>
+  <p class="section-sub">See the full price of your mortgage — what you pay vs. what you borrowed.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="t-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcTotal()"></div>
+    <div class="field"><label>Interest Rate (%)</label><input type="number" id="t-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcTotal()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="t-term" value="25" min="5" max="40" oninput="calcTotal()"></div>
+  </div>
+  <div class="sr" id="total-stats"></div>
+  <div class="cw"><div class="ct">Loan vs Interest — What Makes Up Your Total Repayment</div><canvas id="total-chart" height="80"></canvas></div>
+  <div class="cw"><div class="ct">Outstanding Balance Over Time</div><canvas id="balance-chart" height="160"></canvas></div>
+  <div class="ins" id="total-ins"></div>
+</div>
+
+<!-- ② PAYMENT SPLIT -->
+<div id="panel-amort" class="panel">
+  <h2 class="section-title">How Your Payments Split</h2>
+  <p class="section-sub">In the early years, most of your monthly payment goes to the bank — not your home equity.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="a-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcAmort()"></div>
+    <div class="field"><label>Interest Rate (%)</label><input type="number" id="a-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcAmort()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="a-term" value="25" min="5" max="40" oninput="calcAmort()"></div>
+  </div>
+  <div class="cw">
+    <div class="ct">Monthly Interest vs Capital — Each Year</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Interest Paid</div><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Capital Repaid</div></div>
+    <div id="amort-bars"></div>
+  </div>
+  <div class="sr" id="amort-stats"></div>
+  <div class="ins" id="amort-ins"></div>
+</div>
+
+<!-- ③ EXTRA PAYMENT -->
+<div id="panel-extra" class="panel">
+  <h2 class="section-title">The Power of One Extra Payment</h2>
+  <p class="section-sub">Making 13 payments instead of 12 each year has a surprisingly dramatic effect on your total interest and term.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="e-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcExtra()"></div>
+    <div class="field"><label>Interest Rate (%)</label><input type="number" id="e-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcExtra()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="e-term" value="25" min="5" max="40" oninput="calcExtra()"></div>
+  </div>
+  <table class="ct2"><thead><tr><th>Scenario</th><th>Monthly</th><th>Total Paid</th><th>Total Interest</th><th>Term</th></tr></thead><tbody id="extra-table"></tbody></table>
+  <div class="cw">
+    <div class="ct">Balance Over Time: Standard vs 13 Payments/Year</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Standard (12/yr)</div><div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>13 Payments/yr</div></div>
+    <canvas id="extra-chart" height="180"></canvas>
+  </div>
+  <div class="ins" id="extra-ins"></div>
+</div>
+
+<!-- ④ FIXED vs FIXED -->
+<div id="panel-fixed" class="panel">
+  <h2 class="section-title">2-Year vs 5-Year Fixed Rate</h2>
+  <p class="section-sub">Remortgaging fees add up. See how product fees compound over your full term.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="f-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcFixed()"></div>
+    <div class="field"><label>2-Year Fix Rate (%)</label><input type="number" id="f-rate2" value="4.2" min="0.5" max="15" step="0.1" oninput="calcFixed()"></div>
+    <div class="field"><label>5-Year Fix Rate (%)</label><input type="number" id="f-rate5" value="4.5" min="0.5" max="15" step="0.1" oninput="calcFixed()"></div>
+    <div class="field"><label>Product Fee (£)</label><input type="number" id="f-fee" value="999" min="0" max="5000" step="100" oninput="calcFixed()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="f-term" value="25" min="5" max="40" oninput="calcFixed()"></div>
+  </div>
+  <table class="ct2"><thead><tr><th>Strategy</th><th>Remortgages</th><th>Total Fees</th><th>Total Interest</th><th>Grand Total</th></tr></thead><tbody id="fixed-body"></tbody></table>
+  <div class="cw">
+    <div class="ct">Cumulative Total Cost Over Term</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>2-Year Fixed</div><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>5-Year Fixed</div></div>
+    <canvas id="fixed-chart" height="180"></canvas>
+  </div>
+  <div class="ins" id="fixed-ins"></div>
+</div>
+
+<!-- ⑤ OFFSET vs INVEST -->
+<div id="panel-offset" class="panel">
+  <h2 class="section-title">Offset Mortgage vs. Investing</h2>
+  <p class="section-sub">Should you use savings to reduce your mortgage interest — or invest for growth?</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="o-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcOffset()"></div>
+    <div class="field"><label>Mortgage Rate (%)</label><input type="number" id="o-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcOffset()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="o-term" value="25" min="5" max="40" oninput="calcOffset()"></div>
+    <div class="field"><label>Savings to Offset / Invest (£)</label><input type="number" id="o-savings" value="50000" min="1000" max="500000" step="1000" oninput="calcOffset()"></div>
+    <div class="field"><label>Investment Return (% p.a.)</label><input type="number" id="o-invest" value="7.0" min="1" max="20" step="0.5" oninput="calcOffset()"></div>
+  </div>
+  <div class="sr" id="offset-stats"></div>
+  <div class="cw">
+    <div class="ct">Cumulative Interest Saved vs Investment Portfolio Value</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Interest Saved (Offset)</div><div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Investment Portfolio</div></div>
+    <canvas id="offset-chart" height="200"></canvas>
+  </div>
+  <div class="ins" id="offset-ins"></div>
+</div>
+
+<!-- ⑥ STAMP DUTY -->
+<div id="panel-stamp" class="panel">
+  <h2 class="section-title">Stamp Duty &amp; True Buying Cost</h2>
+  <p class="section-sub">SDLT is paid upfront and often forgotten. See the full cash needed before your first mortgage payment.</p>
+  <div class="ig">
+    <div class="field"><label>Property Price (£)</label><input type="number" id="sd-price" value="350000" min="10000" max="5000000" step="5000" oninput="calcStamp()"></div>
+    <div class="field"><label>Buyer Type</label>
+      <select id="sd-type" onchange="calcStamp()">
+        <option value="standard">Standard buyer</option>
+        <option value="ftb">First-Time Buyer</option>
+        <option value="addl">Additional Property (+3% surcharge)</option>
+      </select>
+    </div>
+    <div class="field"><label>Deposit (£)</label><input type="number" id="sd-deposit" value="35000" min="0" max="2000000" step="5000" oninput="calcStamp()"></div>
+    <div class="field"><label>Legal Fees (£)</label><input type="number" id="sd-legal" value="2000" min="0" max="20000" step="500" oninput="calcStamp()"></div>
+    <div class="field"><label>Survey / Valuation (£)</label><input type="number" id="sd-survey" value="800" min="0" max="5000" step="100" oninput="calcStamp()"></div>
+    <div class="field"><label>Broker / Arrangement Fee (£)</label><input type="number" id="sd-broker" value="999" min="0" max="5000" step="100" oninput="calcStamp()"></div>
+  </div>
+  <div class="sr" id="stamp-stats"></div>
+  <div class="cw"><div class="ct">Stamp Duty Bands — How It's Calculated</div><div id="stamp-bands"></div></div>
+  <div class="cw"><div class="ct">Full Upfront Cost Breakdown</div><canvas id="stamp-chart" height="110"></canvas></div>
+  <div class="ins" id="stamp-ins"></div>
+</div>
+
+<!-- ⑦ RENT vs BUY -->
+<div id="panel-rent" class="panel">
+  <h2 class="section-title">Rent vs. Buy Comparison</h2>
+  <p class="section-sub">Buying isn't always better — it depends on how long you stay, how prices move, and what you do with your deposit if you rent instead.</p>
+  <div class="ig">
+    <div class="field"><label>Property Price (£)</label><input type="number" id="rb-price" value="350000" min="50000" max="5000000" step="5000" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Deposit (£)</label><input type="number" id="rb-deposit" value="35000" min="5000" max="2000000" step="5000" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Mortgage Rate (%)</label><input type="number" id="rb-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Mortgage Term (Years)</label><input type="number" id="rb-term" value="25" min="5" max="40" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Monthly Rent (£)</label><input type="number" id="rb-rent" value="1400" min="100" max="20000" step="50" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Annual Rent Rise (%)</label><input type="number" id="rb-rentrise" value="3.0" min="0" max="10" step="0.5" oninput="calcRentBuy()"></div>
+    <div class="field"><label>House Price Growth (%/yr)</label><input type="number" id="rb-hpg" value="3.0" min="-5" max="15" step="0.5" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Deposit Invested Return (%/yr)</label><input type="number" id="rb-inv" value="6.0" min="0" max="15" step="0.5" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Annual Maintenance (% of value)</label><input type="number" id="rb-maint" value="1.0" min="0" max="5" step="0.25" oninput="calcRentBuy()"></div>
+    <div class="field"><label>Comparison Period (Years)</label><input type="number" id="rb-years" value="10" min="1" max="40" oninput="calcRentBuy()"></div>
+  </div>
+  <div class="sr" id="rentbuy-stats"></div>
+  <div class="cw">
+    <div class="ct">Net Wealth Over Time: Buying vs Renting + Investing</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Net Worth: Buy</div><div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Net Worth: Rent + Invest</div></div>
+    <canvas id="rentbuy-chart" height="200"></canvas>
+  </div>
+  <div class="ins" id="rentbuy-ins"></div>
+</div>
+
+<!-- ⑧ RATE SENSITIVITY -->
+<div id="panel-rate" class="panel">
+  <h2 class="section-title">Rate Sensitivity Tool</h2>
+  <p class="section-sub">What happens to your payments and total cost when rates change? Essential stress-testing for any homeowner approaching renewal.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="rs-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcRate()"></div>
+    <div class="field"><label>Current Rate (%)</label><input type="number" id="rs-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcRate()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="rs-term" value="25" min="5" max="40" oninput="calcRate()"></div>
+  </div>
+  <div class="sr" id="rate-stats"></div>
+  <div class="cw"><div class="ct">Monthly Payment vs Interest Rate Scenarios</div><canvas id="rate-chart" height="180"></canvas></div>
+  <table class="ct2"><thead><tr><th>Rate Scenario</th><th>Monthly Payment</th><th>vs Current</th><th>Extra per Year</th><th>Total Interest</th></tr></thead><tbody id="rate-table"></tbody></table>
+  <div class="ins" id="rate-ins"></div>
+</div>
+
+<!-- ⑨ ERC -->
+<div id="panel-erc" class="panel">
+  <h2 class="section-title">Early Repayment Charge (ERC)</h2>
+  <p class="section-sub">Leaving a fixed deal early triggers a penalty. Find out whether switching is worth it — even after paying the ERC.</p>
+  <div class="ig">
+    <div class="field"><label>Current Balance (£)</label><input type="number" id="erc-bal" value="280000" min="10000" max="2000000" step="5000" oninput="calcERC()"></div>
+    <div class="field"><label>Current Rate (%)</label><input type="number" id="erc-currate" value="5.5" min="0.5" max="15" step="0.1" oninput="calcERC()"></div>
+    <div class="field"><label>ERC Rate (%)</label><input type="number" id="erc-pct" value="3.0" min="0" max="10" step="0.25" oninput="calcERC()"></div>
+    <div class="field"><label>Months Left on Fix</label><input type="number" id="erc-months" value="18" min="1" max="120" oninput="calcERC()"></div>
+    <div class="field"><label>New Rate If You Switch (%)</label><input type="number" id="erc-newrate" value="4.2" min="0.5" max="15" step="0.1" oninput="calcERC()"></div>
+    <div class="field"><label>New Deal Fee (£)</label><input type="number" id="erc-fee" value="999" min="0" max="5000" step="100" oninput="calcERC()"></div>
+    <div class="field"><label>Remaining Term (Years)</label><input type="number" id="erc-term" value="20" min="1" max="40" oninput="calcERC()"></div>
+  </div>
+  <div class="sr" id="erc-stats"></div>
+  <div class="cw">
+    <div class="ct">Cumulative Cost: Stay vs Switch (including ERC)</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Stay on Current Deal</div><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Pay ERC + Switch Now</div></div>
+    <canvas id="erc-chart" height="200"></canvas>
+  </div>
+  <div class="ins" id="erc-ins"></div>
+</div>
+
+<!-- ⑩ DEPOSIT IMPACT -->
+<div id="panel-deposit" class="panel">
+  <h2 class="section-title">Deposit Impact</h2>
+  <p class="section-sub">A bigger deposit doesn't just reduce your loan — it unlocks better rates, lower LTV bands, and dramatically less interest over the life of your mortgage.</p>
+  <div class="ig">
+    <div class="field"><label>Property Price (£)</label><input type="number" id="dep-price" value="350000" min="50000" max="5000000" step="5000" oninput="calcDeposit()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="dep-term" value="25" min="5" max="40" oninput="calcDeposit()"></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin:-8px 0 18px">Rates below reflect typical LTV-tiered pricing. Click any rate to adjust it.</p>
+  <table class="ct2" id="deposit-table">
+    <thead><tr><th>Deposit</th><th>LTV</th><th>Rate (%)</th><th>Monthly</th><th>Total Interest</th><th>Total Cost</th></tr></thead>
+    <tbody id="deposit-body"></tbody>
+  </table>
+  <div class="cw"><div class="ct">Total Interest Paid by Deposit Size</div><canvas id="deposit-chart" height="180"></canvas></div>
+  <div class="ins" id="deposit-ins"></div>
+</div>
+
+<!-- ⑪ INFLATION ADJUSTER -->
+<div id="panel-inflation" class="panel">
+  <h2 class="section-title">Life of Loan Inflation Adjuster</h2>
+  <p class="section-sub">Your payment stays fixed, but inflation erodes its real value. In 20 years, £1,500/month feels very different. See what it's actually worth over time.</p>
+  <div class="ig">
+    <div class="field"><label>Mortgage Amount (£)</label><input type="number" id="inf-amount" value="350000" min="10000" max="2000000" step="5000" oninput="calcInflation()"></div>
+    <div class="field"><label>Interest Rate (%)</label><input type="number" id="inf-rate" value="4.5" min="0.5" max="15" step="0.1" oninput="calcInflation()"></div>
+    <div class="field"><label>Term (Years)</label><input type="number" id="inf-term" value="25" min="5" max="40" oninput="calcInflation()"></div>
+    <div class="field"><label>Assumed Inflation (%/yr)</label><input type="number" id="inf-inf" value="2.5" min="0" max="15" step="0.5" oninput="calcInflation()"></div>
+  </div>
+  <div class="sr" id="inf-stats"></div>
+  <div class="cw">
+    <div class="ct">Nominal Payment vs Real (Inflation-Adjusted) Value</div>
+    <div class="leg"><div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Nominal (what you pay)</div><div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Real Value (today's £)</div></div>
+    <canvas id="inf-chart" height="200"></canvas>
+  </div>
+  <table class="ct2"><thead><tr><th>Year</th><th>Monthly Payment</th><th>Real Value (Today's £)</th><th>Purchasing Power Lost</th><th>Real as % of Nominal</th></tr></thead><tbody id="inf-table"></tbody></table>
+  <div class="ins" id="inf-ins"></div>
+</div>
+
+<!-- ⑫ SVR DANGER ZONE -->
+<div id="panel-svr" class="panel">
+  <h2 class="section-title">SVR Danger Zone <span class="svr-badge">Avoid This</span></h2>
+  <p class="section-sub">Falling onto your lender's Standard Variable Rate is one of the most expensive mortgage mistakes. Model the exact cost — and compare your real alternatives: fix or tracker.</p>
+  <div class="ig">
+    <div class="field"><label>Current Balance (£)</label><input type="number" id="svr-bal" value="280000" min="10000" max="2000000" step="5000" oninput="calcSVR()"></div>
+    <div class="field"><label>SVR Rate (%)</label><input type="number" id="svr-rate" value="7.5" min="1" max="20" step="0.1" oninput="calcSVR()"></div>
+    <div class="field"><label>New Fix Rate (%)</label><input type="number" id="svr-fix" value="4.5" min="0.5" max="15" step="0.1" oninput="calcSVR()"></div>
+    <div class="field"><label>Tracker Rate (%)</label><input type="number" id="svr-tracker" value="4.8" min="0.5" max="15" step="0.1" oninput="calcSVR()"></div>
+    <div class="field"><label>Remaining Term (Years)</label><input type="number" id="svr-term" value="20" min="1" max="40" oninput="calcSVR()"></div>
+    <div class="field"><label>Months on SVR Before Acting</label><input type="number" id="svr-delay" value="6" min="1" max="36" oninput="calcSVR()"></div>
+    <div class="field"><label>New Deal Fee (£)</label><input type="number" id="svr-fee" value="999" min="0" max="5000" step="100" oninput="calcSVR()"></div>
+  </div>
+  <div class="sr" id="svr-stats"></div>
+  <table class="ct2"><thead><tr><th>Scenario</th><th>Monthly</th><th>Total Interest</th><th>vs Fix Now</th><th>Exit Fees?</th></tr></thead><tbody id="svr-table"></tbody></table>
+  <div class="cw">
+    <div class="ct">Cumulative Interest: SVR vs Fix vs Tracker</div>
+    <div class="leg">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>SVR (full term)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>SVR then Fix (after delay)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Fix immediately</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#8e44ad"></div>Tracker (no exit fee)</div>
+    </div>
+    <canvas id="svr-chart" height="220"></canvas>
+  </div>
+  <div class="ins wrn" id="svr-ins"></div>
+</div>
+
+</main>
+
+<footer style="background:var(--ink);color:rgba(245,240,232,.4);text-align:center;padding:26px 24px;font-size:12px;line-height:1.7">
+  This calculator is for educational purposes only and does not constitute financial advice.<br>
+  Always consult a qualified mortgage adviser before making financial decisions.<br>
+  <span style="color:var(--gold);opacity:.7;margin-top:6px;display:inline-block">Mortgage Decoded · Built to educate, not to sell</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ── Core utilities ──────────────────────────────────────────────────────────
+const fmt  = v => '£' + Math.round(v).toLocaleString('en-GB');
+const fmtK = v => v>=1e6?'£'+(v/1e6).toFixed(1)+'m':v>=1000?'£'+(v/1000).toFixed(0)+'k':fmt(v);
+const pct  = v => (+v).toFixed(1)+'%';
+const sign = v => (v>=0?'+':'')+fmt(v);
+const charts = {};
+function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function mp(P,r,y){const rm=r/100/12,n=y*12;if(rm===0)return P/n;return P*rm*Math.pow(1+rm,n)/(Math.pow(1+rm,n)-1);}
+
+function amort(P,r,y){
+  const rm=r/100/12,M=mp(P,r,y);let bal=P;const out=[];
+  for(let i=0;i<y*12;i++){const int=bal*rm,cap=Math.min(M-int,bal);bal=Math.max(0,bal-cap);out.push({interest:int,capital:cap,balance:bal});}
+  return out;
+}
+
+const bco={responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.parsed.y??ctx.parsed)}}},
+  scales:{x:{grid:{color:'rgba(200,191,168,.3)'},ticks:{color:'#7a7060',font:{size:11}}},y:{grid:{color:'rgba(200,191,168,.5)'},ticks:{color:'#7a7060',font:{size:11},callback:v=>fmtK(v)}}}};
+
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');btn.classList.add('active');
+  ({total:calcTotal,amort:calcAmort,extra:calcExtra,fixed:calcFixed,offset:calcOffset,
+    stamp:calcStamp,rent:calcRentBuy,rate:calcRate,erc:calcERC,deposit:calcDeposit,
+    inflation:calcInflation,svr:calcSVR})[id]?.();
+}
+
+// ── ① TOTAL COST ────────────────────────────────────────────────────────────
+function calcTotal(){
+  const P=+document.getElementById('t-amount').value,r=+document.getElementById('t-rate').value,y=+document.getElementById('t-term').value;
+  if(!P||!r||!y)return;
+  const M=mp(P,r,y),tp=M*y*12,ti=tp-P,sch=amort(P,r,y),hb=sch[Math.floor(y*6)-1]?.balance??0;
+  document.getElementById('total-stats').innerHTML=`
+    <div class="sc teal"><div class="sl">Borrowed</div><div class="sv">${fmt(P)}</div><div class="ss">Your loan amount</div></div>
+    <div class="sc gold"><div class="sl">Monthly Payment</div><div class="sv">${fmt(M)}</div><div class="ss">Every month for ${y} yrs</div></div>
+    <div class="sc red"><div class="sl">Total Interest</div><div class="sv">${fmt(ti)}</div><div class="ss">${pct(ti/P*100)} of loan amount</div></div>
+    <div class="sc green"><div class="sl">Total Repaid</div><div class="sv">${fmt(tp)}</div><div class="ss">Over ${y} years</div></div>`;
+  dc('total-chart');charts['total-chart']=new Chart(document.getElementById('total-chart').getContext('2d'),{type:'doughnut',data:{labels:['Original Loan','Total Interest'],datasets:[{data:[P,ti],backgroundColor:['#1a5c5c','#c0392b'],borderWidth:0,hoverOffset:8}]},options:{plugins:{legend:{display:true,position:'right',labels:{color:'#0e0e0f',font:{size:12},padding:16}},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.parsed)+' ('+pct(ctx.parsed/tp*100)+')'}}},cutout:'65%'}});
+  const lbls=Array.from({length:y+1},(_,i)=>'Yr '+i),bb=lbls.map((_,yr)=>yr===0?P:sch[yr*12-1]?.balance??0);
+  dc('balance-chart');charts['balance-chart']=new Chart(document.getElementById('balance-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{data:bb,borderColor:'#1a5c5c',backgroundColor:'rgba(26,92,92,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0,pointHoverRadius:5}]},options:{...bco,plugins:{...bco.plugins,tooltip:{callbacks:{label:ctx=>' Balance: '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('total-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>For every <strong>${fmt(P)}</strong> borrowed at <strong>${r}%</strong> over <strong>${y} years</strong>, you repay <strong>${fmt(tp)}</strong> total — <strong>${fmt(ti)}</strong> in interest alone. At the halfway point (year ${Math.floor(y/2)}), you still owe <strong>${fmt(hb)}</strong> — ${pct(hb/P*100)} of the original loan. Mortgages are front-loaded: banks earn most of their profit in the early years.`;
+}
+
+// ── ② PAYMENT SPLIT ─────────────────────────────────────────────────────────
+function calcAmort(){
+  const P=+document.getElementById('a-amount').value,r=+document.getElementById('a-rate').value,y=+document.getElementById('a-term').value;
+  if(!P||!r||!y)return;
+  const sch=amort(P,r,y),M=mp(P,r,y);
+  const yd=Array.from({length:y},(_,i)=>{const sl=sch.slice(i*12,(i+1)*12);return{yr:i+1,int:sl.reduce((s,m)=>s+m.interest,0),cap:sl.reduce((s,m)=>s+m.capital,0)};});
+  const show=y<=15?yd:yd.filter(d=>d.yr===1||d.yr===y||d.yr%5===0);
+  const bars=document.getElementById('amort-bars');bars.innerHTML='';
+  show.forEach(({yr,int,cap})=>{const ip=int/(int+cap)*100;const d=document.createElement('div');d.className='amort-year';d.innerHTML=`<div class="amort-label">Yr ${yr}</div><div class="amort-bar-wrap"><div class="amort-interest" style="width:${ip}%"></div><div class="amort-capital" style="width:${100-ip}%"></div></div><div class="amort-pct">${Math.round(ip)}% int</div>`;bars.appendChild(d);});
+  const yr1=yd[0],yrL=yd[yd.length-1],y1ip=yr1.int/(yr1.int+yr1.cap)*100;
+  const cx=(()=>{for(let i=0;i<yd.length;i++)if(yd[i].cap>yd[i].int)return yd[i].yr;return y;})();
+  document.getElementById('amort-stats').innerHTML=`<div class="sc red"><div class="sl">Year 1 — Interest</div><div class="sv">${pct(y1ip)}</div><div class="ss">${fmt(yr1.int)} of payments</div></div><div class="sc teal"><div class="sl">Year 1 — Capital</div><div class="sv">${pct(100-y1ip)}</div><div class="ss">${fmt(yr1.cap)} builds equity</div></div><div class="sc green"><div class="sl">Crossover Year</div><div class="sv">Year ${cx}</div><div class="ss">Capital overtakes interest</div></div><div class="sc gold"><div class="sl">Monthly Payment</div><div class="sv">${fmt(M)}</div><div class="ss">Fixed throughout</div></div>`;
+  document.getElementById('amort-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>In Year 1, <strong>${pct(y1ip)}</strong> of your payment is pure interest. The crossover — where you pay more capital than interest — doesn't happen until <strong>Year ${cx}</strong>. This front-loading is why overpaying early is so powerful.`;
+}
+
+// ── ③ EXTRA PAYMENT ─────────────────────────────────────────────────────────
+function calcExtra(){
+  const P=+document.getElementById('e-amount').value,r=+document.getElementById('e-rate').value,y=+document.getElementById('e-term').value;
+  if(!P||!r||!y)return;
+  const M=mp(P,r,y),rm=r/100/12,si=M*y*12-P,st=M*y*12,em=M*13/12;
+  let bal=P,ti=0,mo=0;const eb=[P];
+  while(bal>0.01&&mo<y*12*2){const i=bal*rm,c=Math.min(em-i,bal);ti+=i;bal=Math.max(0,bal-c);mo++;eb.push(bal);}
+  const ye=mo/12,te=em*mo,sch=amort(P,r,y),lbls=Array.from({length:y+1},(_,i)=>'Yr '+i);
+  const sb=lbls.map((_,yr)=>yr===0?P:sch[yr*12-1]?.balance??0);
+  const xb=lbls.map((_,yr)=>{if(yr===0)return P;const idx=yr*12;return idx<eb.length?eb[idx]:0;});
+  document.getElementById('extra-table').innerHTML=`<tr><td>Standard (12/yr)</td><td class="mono">${fmt(M)}/mo</td><td class="mono">${fmt(st)}</td><td class="mono">${fmt(si)}</td><td class="mono">${y} yrs</td></tr><tr class="hi2"><td>13 Payments/yr</td><td class="mono">${fmt(em)}/mo</td><td class="mono">${fmt(te)}</td><td class="mono">${fmt(ti)}</td><td class="mono">${ye.toFixed(1)} yrs</td></tr><tr class="sav"><td><strong>You Save</strong></td><td>—</td><td class="mono" style="color:var(--green);font-weight:700">${fmt(st-te)}</td><td class="mono" style="color:var(--green);font-weight:700">${fmt(si-ti)}</td><td class="mono" style="color:var(--green);font-weight:700">${(y-ye).toFixed(1)} yrs shorter</td></tr>`;
+  dc('extra-chart');charts['extra-chart']=new Chart(document.getElementById('extra-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{label:'Standard',data:sb,borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,.05)',borderWidth:2,fill:true,tension:.3,pointRadius:0},{label:'13 Payments',data:xb,borderColor:'#1a6b3a',backgroundColor:'rgba(26,107,58,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0}]},options:{...bco,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('extra-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>By adding just <strong>${fmt(M/12)}</strong> extra per month (spreading one extra payment across the year), you save <strong>${fmt(si-ti)}</strong> in interest and clear your mortgage <strong>${(y-ye).toFixed(1)} years early</strong>. This is one of the highest-return, lowest-effort financial moves available to any homeowner.`;
+}
+
+// ── ④ FIXED vs FIXED ────────────────────────────────────────────────────────
+function calcFixed(){
+  const P=+document.getElementById('f-amount').value,r2=+document.getElementById('f-rate2').value,r5=+document.getElementById('f-rate5').value,fee=+document.getElementById('f-fee').value,y=+document.getElementById('f-term').value;
+  if(!P||!r2||!r5||!y)return;
+  const sc=(rate,fy)=>{const M=mp(P,rate,y),i=M*y*12-P,re=Math.max(0,Math.floor(y/fy)-1),f=re*fee;return{i,f,t:P+i+f,re,M};};
+  const t2=sc(r2,2),t5=sc(r5,5),w=t2.t<t5.t?'2-year':'5-year',df=Math.abs(t2.t-t5.t);
+  document.getElementById('fixed-body').innerHTML=`<tr><td>2-Year Fixed (${r2}%)</td><td class="mono">${t2.re}x</td><td class="mono">${fmt(t2.f)}</td><td class="mono">${fmt(t2.i)}</td><td class="mono">${fmt(t2.t)}</td></tr><tr><td>5-Year Fixed (${r5}%)</td><td class="mono">${t5.re}x</td><td class="mono">${fmt(t5.f)}</td><td class="mono">${fmt(t5.i)}</td><td class="mono">${fmt(t5.t)}</td></tr><tr class="sav"><td><strong>Difference</strong></td><td>—</td><td class="mono">${fmt(Math.abs(t2.f-t5.f))}</td><td class="mono">${fmt(Math.abs(t2.i-t5.i))}</td><td class="mono" style="color:var(--green);font-weight:700">${fmt(df)}</td></tr>`;
+  const lbls=Array.from({length:y+1},(_,i)=>'Yr '+i),c2=[0],c5=[0];
+  for(let yr=1;yr<=y;yr++){const f2=yr>1&&(yr-1)%2===0?fee:0,f5=yr>1&&(yr-1)%5===0?fee:0;c2.push(c2[yr-1]+t2.M*12+f2);c5.push(c5[yr-1]+t5.M*12+f5);}
+  dc('fixed-chart');charts['fixed-chart']=new Chart(document.getElementById('fixed-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{label:'2-Year Fixed',data:c2,borderColor:'#c0392b',borderWidth:2,fill:false,tension:.1,pointRadius:0},{label:'5-Year Fixed',data:c5,borderColor:'#1a5c5c',borderWidth:2,fill:false,tension:.1,pointRadius:0}]},options:{...bco,plugins:{legend:{display:true,labels:{color:'#0e0e0f',font:{size:12}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('fixed-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>On these rates, the <strong>${w} fixed</strong> costs less overall — saving approximately <strong>${fmt(df)}</strong> over ${y} years. 2-year deals require <strong>${t2.re} remortgages</strong> (${fmt(t2.f)} in fees) vs. <strong>${t5.re}</strong> for 5-year deals (${fmt(t5.f)}). Every remortgage costs time, stress, and money — even when the rate looks better.`;
+}
+
+// ── ⑤ OFFSET vs INVEST ──────────────────────────────────────────────────────
+function calcOffset(){
+  const P=+document.getElementById('o-amount').value,r=+document.getElementById('o-rate').value,y=+document.getElementById('o-term').value,sav=+document.getElementById('o-savings').value,ir=+document.getElementById('o-invest').value;
+  if(!P||!r||!y||!sav)return;
+  const ss=amort(P,r,y),si=ss.reduce((s,m)=>s+m.interest,0);
+  const ep=Math.max(P-sav,1),os=amort(ep,r,y),oi=os.reduce((s,m)=>s+m.interest,0),saved=si-oi;
+  const iv=[sav];for(let yr=1;yr<=y;yr++)iv.push(iv[yr-1]*(1+ir/100));
+  const fi=iv[y],ig=fi-sav;
+  let cs=0;const sBy=[0];
+  for(let yr=1;yr<=y;yr++){const a=ss.slice((yr-1)*12,yr*12).reduce((s,m)=>s+m.interest,0)-os.slice((yr-1)*12,yr*12).reduce((s,m)=>s+m.interest,0);cs+=a;sBy.push(cs);}
+  const nw=ig>saved?'Investing wins':'Offsetting wins',adv=Math.abs(ig-saved),wc=ig>saved?'green':'teal';
+  document.getElementById('offset-stats').innerHTML=`<div class="sc teal"><div class="sl">Interest Saved (Offset)</div><div class="sv">${fmt(saved)}</div><div class="ss">Guaranteed, risk-free</div></div><div class="sc gold"><div class="sl">Investment Value</div><div class="sv">${fmt(fi)}</div><div class="ss">At ${ir}% avg return</div></div><div class="sc ${wc}"><div class="sl">Investment Gain</div><div class="sv">${fmt(ig)}</div><div class="ss">Profit above ${fmt(sav)}</div></div><div class="sc ${wc}"><div class="sl">Net Advantage</div><div class="sv">${fmt(adv)}</div><div class="ss">${nw}</div></div>`;
+  const lbls=Array.from({length:y+1},(_,i)=>'Yr '+i);
+  dc('offset-chart');charts['offset-chart']=new Chart(document.getElementById('offset-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{label:'Cumulative Interest Saved',data:sBy,borderColor:'#1a5c5c',backgroundColor:'rgba(26,92,92,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:0},{label:'Investment Portfolio',data:iv,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0}]},options:{...bco,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('offset-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>With <strong>${fmt(sav)}</strong> at a <strong>${ir}%</strong> assumed return, <strong>${nw.toLowerCase()}</strong> by <strong>${fmt(adv)}</strong>. Offsetting gives a <em>guaranteed</em> saving of <strong>${fmt(saved)}</strong> — tax-free and risk-free, equivalent to earning ${r}% tax-free. Investing can beat it, but returns aren't guaranteed. The right answer depends on your risk tolerance, discipline, and tax position.`;
+}
+
+// ── ⑥ STAMP DUTY ────────────────────────────────────────────────────────────
+function calcStamp(){
+  const price=+document.getElementById('sd-price').value,type=document.getElementById('sd-type').value;
+  const dep=+document.getElementById('sd-deposit').value,legal=+document.getElementById('sd-legal').value,survey=+document.getElementById('sd-survey').value,broker=+document.getElementById('sd-broker').value;
+  if(!price)return;
+  let sdlt=0;const bands=[];
+  const sur=type==='addl'?0.03:0;
+  if(type==='ftb'){
+    if(price<=425000){bands.push({l:'£0–£425,000 (FTB relief)',r:0,t:0});}
+    else if(price<=625000){bands.push({l:'£0–£425,000 (FTB relief)',r:0,t:0});const t=(price-425000)*0.05;sdlt+=t;bands.push({l:'£425,001–£625,000',r:5,t});}
+    else{const t0=250000*sur;sdlt+=t0;bands.push({l:'£0–£250,000',r:sur*100,t:t0});if(price>250000){const t=Math.min(price,925000)-250000;const tax=t*(0.05+sur);sdlt+=tax;bands.push({l:'£250,001–£925,000',r:5+sur*100,t:tax});}if(price>925000){const t=Math.min(price,1500000)-925000;const tax=t*(0.10+sur);sdlt+=tax;bands.push({l:'£925,001–£1,500,000',r:10+sur*100,t:tax});}if(price>1500000){const t=price-1500000;const tax=t*(0.12+sur);sdlt+=tax;bands.push({l:'Above £1,500,000',r:12+sur*100,t:tax});}}
+  } else {
+    const t0=Math.min(price,250000)*sur;sdlt+=t0;bands.push({l:'£0–£250,000',r:sur*100,t:t0});
+    if(price>250000){const t=Math.min(price,925000)-250000;const tax=t*(0.05+sur);sdlt+=tax;bands.push({l:'£250,001–£925,000',r:5+sur*100,t:tax});}
+    if(price>925000){const t=Math.min(price,1500000)-925000;const tax=t*(0.10+sur);sdlt+=tax;bands.push({l:'£925,001–£1,500,000',r:10+sur*100,t:tax});}
+    if(price>1500000){const t=price-1500000;const tax=t*(0.12+sur);sdlt+=tax;bands.push({l:'Above £1,500,000',r:12+sur*100,t:tax});}
+  }
+  const others=legal+survey+broker,total=sdlt+dep+others,mort=price-dep,ep=(sdlt/price*100).toFixed(2);
+  document.getElementById('stamp-stats').innerHTML=`<div class="sc red"><div class="sl">Stamp Duty (SDLT)</div><div class="sv">${fmt(sdlt)}</div><div class="ss">${ep}% effective rate</div></div><div class="sc teal"><div class="sl">Deposit</div><div class="sv">${fmt(dep)}</div><div class="ss">${pct(dep/price*100)} of price</div></div><div class="sc gold"><div class="sl">Other Upfront Costs</div><div class="sv">${fmt(others)}</div><div class="ss">Legal, survey, broker</div></div><div class="sc green"><div class="sl">Total Cash Needed</div><div class="sv">${fmt(total)}</div><div class="ss">Before any mortgage payment</div></div>`;
+  document.getElementById('stamp-bands').innerHTML=bands.map(b=>`<div class="sd-band ${b.t>0?'ab':''}"><span>${b.l} <span class="sd-bl">(${b.r}%)</span></span><span class="mono" style="font-weight:${b.t>0?700:400};color:${b.t>0?'var(--teal)':'var(--muted)'}">${fmt(b.t)}</span></div>`).join('');
+  dc('stamp-chart');charts['stamp-chart']=new Chart(document.getElementById('stamp-chart').getContext('2d'),{type:'bar',data:{labels:['Stamp Duty','Deposit','Legal Fees','Survey','Broker Fee','Mortgage'],datasets:[{data:[sdlt,dep,legal,survey,broker,mort],backgroundColor:['#c0392b','#1a5c5c','#c8a84b','#1a6b3a','#7a7060','rgba(26,92,92,.3)'],borderWidth:0,borderRadius:4}]},options:{...bco,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.parsed.x)}}},scales:{x:{...bco.scales.x,ticks:{...bco.scales.x.ticks,callback:v=>fmtK(v)}},y:{grid:{display:false},ticks:{color:'#7a7060',font:{size:12}}}}}});
+  document.getElementById('stamp-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>Before your first mortgage payment, you need <strong>${fmt(total)}</strong> in cash. Stamp duty alone is <strong>${fmt(sdlt)}</strong> — money paid directly to HMRC with nothing to show for it. ${type==='addl'?'The 3% additional property surcharge significantly increases this cost. ':''} ${type==='ftb'&&price<=425000?'As a first-time buyer under £425,000, you pay <strong>zero</strong> stamp duty — saving up to £8,750. ':''} Many buyers are shocked by how much cash is needed before they can move in.`;
+}
+
+// ── ⑦ RENT vs BUY ───────────────────────────────────────────────────────────
+function calcRentBuy(){
+  const price=+document.getElementById('rb-price').value,dep=+document.getElementById('rb-deposit').value,rate=+document.getElementById('rb-rate').value,term=+document.getElementById('rb-term').value;
+  const rent=+document.getElementById('rb-rent').value,rr=+document.getElementById('rb-rentrise').value/100,hpg=+document.getElementById('rb-hpg').value/100,inv=+document.getElementById('rb-inv').value/100,maint=+document.getElementById('rb-maint').value/100,yrs=+document.getElementById('rb-years').value;
+  if(!price||!dep||!rate||!rent)return;
+  const mort=price-dep,M=mp(mort,rate,term),sch=amort(mort,rate,term);
+  const buyW=[],rentW=[];
+  for(let yr=0;yr<=yrs;yr++){
+    const pv=price*Math.pow(1+hpg,yr),rem=yr===0?mort:sch[Math.min(yr*12-1,sch.length-1)]?.balance??0;
+    let cm=0;for(let y2=1;y2<=yr;y2++)cm+=price*Math.pow(1+hpg,y2-.5)*maint;
+    buyW.push(Math.round(pv-rem-cm));
+    const rPort=dep*Math.pow(1+inv,yr);
+    let cd=0,cr=rent;
+    for(let m=1;m<=yr*12;m++){const diff=M-cr;cd+=diff*Math.pow(1+inv/12,yr*12-m);if(m%12===0)cr*=(1+rr);}
+    rentW.push(Math.round(rPort+cd));
+  }
+  const fb=buyW[yrs],fr=rentW[yrs],bw=fb>fr;
+  document.getElementById('rentbuy-stats').innerHTML=`<div class="sc teal"><div class="sl">Buyer Net Worth (Yr ${yrs})</div><div class="sv">${fmt(fb)}</div><div class="ss">Equity after maintenance</div></div><div class="sc gold"><div class="sl">Renter Net Worth (Yr ${yrs})</div><div class="sv">${fmt(fr)}</div><div class="ss">Deposit invested + diff</div></div><div class="sc ${bw?'green':'red'}"><div class="sl">${bw?'Buying Advantage':'Renting Advantage'}</div><div class="sv">${fmt(Math.abs(fb-fr))}</div><div class="ss">After ${yrs} years</div></div><div class="sc gold"><div class="sl">Monthly Mortgage</div><div class="sv">${fmt(M)}</div><div class="ss">vs rent of ${fmt(rent)} today</div></div>`;
+  const lbls=Array.from({length:yrs+1},(_,i)=>'Yr '+i);
+  dc('rentbuy-chart');charts['rentbuy-chart']=new Chart(document.getElementById('rentbuy-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{label:'Net Worth: Buy',data:buyW,borderColor:'#1a5c5c',backgroundColor:'rgba(26,92,92,.06)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0},{label:'Net Worth: Rent + Invest',data:rentW,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,.06)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0}]},options:{...bco,plugins:{legend:{display:true,labels:{color:'#0e0e0f',font:{size:12}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('rentbuy-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>Over ${yrs} years, ${bw?`<strong>buying comes out ahead by ${fmt(Math.abs(fb-fr))}</strong>`:`<strong>renting and investing comes out ahead by ${fmt(Math.abs(fb-fr))}</strong>`}. This assumes <strong>${pct(hpg*100)} annual house price growth</strong> and <strong>${pct(inv*100)} investment return</strong>. Change these assumptions and the answer shifts dramatically. The longer you stay, the more buying tends to win — rising rents and growing equity compound in the buyer's favour over time.`;
+}
+
+// ── ⑧ RATE SENSITIVITY ──────────────────────────────────────────────────────
+function calcRate(){
+  const P=+document.getElementById('rs-amount').value,base=+document.getElementById('rs-rate').value,y=+document.getElementById('rs-term').value;
+  if(!P||!base||!y)return;
+  const bM=mp(P,base,y);
+  const scens=[-2,-1.5,-1,-.5,0,.5,1,1.5,2,3].map(d=>{const r=Math.max(.1,base+d),M=mp(P,r,y),ti=M*y*12-P;return{r,M,d,ti,em:M-bM};});
+  document.getElementById('rate-stats').innerHTML=`<div class="sc teal"><div class="sl">Current Rate</div><div class="sv">${pct(base)}</div><div class="ss">Your baseline</div></div><div class="sc gold"><div class="sl">Monthly @ ${pct(base)}</div><div class="sv">${fmt(bM)}</div><div class="ss">Current payment</div></div><div class="sc red"><div class="sl">If Rate +1%</div><div class="sv">${fmt(mp(P,base+1,y))}</div><div class="ss">+${fmt(mp(P,base+1,y)-bM)}/mo</div></div><div class="sc red"><div class="sl">If Rate +2%</div><div class="sv">${fmt(mp(P,base+2,y))}</div><div class="ss">+${fmt(mp(P,base+2,y)-bM)}/mo</div></div>`;
+  dc('rate-chart');charts['rate-chart']=new Chart(document.getElementById('rate-chart').getContext('2d'),{type:'bar',data:{labels:scens.map(s=>pct(s.r)),datasets:[{data:scens.map(s=>Math.round(s.M)),backgroundColor:scens.map(s=>s.d<0?'rgba(26,107,58,.7)':s.d===0?'rgba(26,92,92,.9)':'rgba(192,57,43,.65)'),borderRadius:4,borderWidth:0}]},options:{...bco,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' Monthly: '+fmt(ctx.parsed.y)}}}}});
+  const rows=scens.map(s=>`<tr ${s.d===0?'class="hi2"':s.d>0?'class="wrn"':''}><td>${s.d===0?`Current Rate (${pct(base)})`:pct(s.r)+' ('+(s.d>0?'+':'')+s.d+'%)'}</td><td class="mono">${fmt(s.M)}</td><td class="mono" style="color:${s.d>0?'var(--red)':s.d<0?'var(--green)':'var(--muted)'}">${s.d===0?'—':sign(Math.round(s.em))+'/mo'}</td><td class="mono" style="color:${s.d>0?'var(--red)':s.d<0?'var(--green)':'var(--muted)'}">${s.d===0?'—':sign(Math.round(s.em*12))+'/yr'}</td><td class="mono">${fmt(s.ti)}</td></tr>`).join('');
+  document.getElementById('rate-table').innerHTML=rows;
+  const r1=mp(P,base+1,y)-bM,r2=mp(P,base+2,y)-bM;
+  document.getElementById('rate-ins').innerHTML=`<div class="ins-hdr">💡 Stress Test</div>On a <strong>${fmt(P)}</strong> mortgage, a 1% rate rise costs <strong>${fmt(r1)}/month</strong> extra — <strong>${fmt(r1*12)}/year</strong>. A 2% rise costs <strong>${fmt(r2)}/month</strong> extra. Anyone coming off a low fixed rate must model this before their deal expires. Can your budget absorb a <strong>${fmt(r2)}/month</strong> increase?`;
+}
+
+// ── ⑨ ERC ───────────────────────────────────────────────────────────────────
+function calcERC(){
+  const bal=+document.getElementById('erc-bal').value,cr=+document.getElementById('erc-currate').value,ep=+document.getElementById('erc-pct').value;
+  const ml=+document.getElementById('erc-months').value,nr=+document.getElementById('erc-newrate').value,fee=+document.getElementById('erc-fee').value,ty=+document.getElementById('erc-term').value;
+  if(!bal||!cr||!nr||!ty)return;
+  const ercCost=bal*(ep/100),tsc=ercCost+fee,cM=mp(bal,cr,ty),nM=mp(bal,nr,ty),ms=cM-nM,be=ms>0?Math.ceil(tsc/ms):Infinity;
+  const cti=cM*ty*12-bal,nti=nM*ty*12-bal,nb=cti-nti-tsc,wi=nb>0&&be<ml;
+  document.getElementById('erc-stats').innerHTML=`<div class="sc red"><div class="sl">ERC Penalty</div><div class="sv">${fmt(ercCost)}</div><div class="ss">${ep}% of ${fmt(bal)}</div></div><div class="sc gold"><div class="sl">Total Switch Cost</div><div class="sv">${fmt(tsc)}</div><div class="ss">ERC + new deal fee</div></div><div class="sc ${ms>0?'green':'red'}"><div class="sl">Monthly Saving</div><div class="sv">${fmt(Math.abs(ms))}/mo</div><div class="ss">${fmt(cM)} → ${fmt(nM)}</div></div><div class="sc ${wi?'green':'red'}"><div class="sl">Break-Even</div><div class="sv">${be===Infinity?'Never':be+' mths'}</div><div class="ss">${wi?'Switch worth it ✓':'Wait for deal to expire'}</div></div>`;
+  const mos=Math.min(ty*12,72),ld=Array.from({length:mos+1},(_,m)=>m%12===0?'Yr '+(m/12):'');
+  let sc=0,sw=tsc;const sd=[0],swd=[tsc];
+  for(let m=1;m<=mos;m++){sc+=cM;sw+=nM;sd.push(Math.round(sc));swd.push(Math.round(sw));}
+  dc('erc-chart');charts['erc-chart']=new Chart(document.getElementById('erc-chart').getContext('2d'),{type:'line',data:{labels:ld,datasets:[{label:'Stay on Current Deal',data:sd,borderColor:'#c0392b',borderWidth:2,fill:false,tension:.1,pointRadius:0},{label:'Pay ERC + Switch',data:swd,borderColor:'#1a5c5c',borderWidth:2,fill:false,tension:.1,pointRadius:0}]},options:{...bco,plugins:{legend:{display:true,labels:{color:'#0e0e0f',font:{size:12}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('erc-ins').innerHTML=`<div class="ins-hdr">💡 Should You Switch?</div>The ERC penalty is <strong>${fmt(ercCost)}</strong> plus a <strong>${fmt(fee)}</strong> arrangement fee — total cost to switch: <strong>${fmt(tsc)}</strong>. At a saving of <strong>${fmt(Math.abs(ms))}/month</strong>, you break even in <strong>${be===Infinity?'never (rates too similar)':be+' months'}</strong>. ${wi?`With <strong>${ml} months</strong> left on your fix, switching now saves you <strong>${fmt(nb)}</strong> net over the remaining term — it is worth it.`:`With <strong>${ml} months</strong> left on your fix, it's better to wait — the saving doesn't yet outweigh the penalty.`}`;
+}
+
+// ── ⑩ DEPOSIT IMPACT ────────────────────────────────────────────────────────
+function calcDeposit(){
+  const price=+document.getElementById('dep-price').value,term=+document.getElementById('dep-term').value;
+  if(!price||!term)return;
+  const tiers=[{p:5,r:5.5},{p:10,r:5.0},{p:15,r:4.7},{p:20,r:4.4},{p:25,r:4.2},{p:30,r:4.0},{p:40,r:3.8}];
+  const tbody=document.getElementById('deposit-body');
+  if(!tbody.querySelector('input')){
+    tbody.innerHTML=tiers.map((t,i)=>{const dep=Math.round(price*(t.p/100)),loan=price-dep;return`<tr data-idx="${i}"><td>${fmt(dep)}</td><td class="mono">${100-t.p}% LTV</td><td><input type="number" step="0.1" min="0.5" max="15" value="${t.r}" style="width:68px;padding:4px 8px;font-family:'DM Mono',monospace;border:1.5px solid var(--border);border-radius:4px;background:var(--card-bg);font-size:13px" oninput="calcDeposit()"></td><td class="mono" id="dm-${i}">—</td><td class="mono" id="di-${i}">—</td><td class="mono" id="dt-${i}">—</td></tr>`;}).join('');
+  } else {
+    // update deposit amounts if price changed
+    tiers.forEach((t,i)=>{const dep=Math.round(price*(t.p/100));const row=tbody.querySelectorAll('tr')[i];if(row)row.cells[0].textContent=fmt(dep);});
+  }
+  const rows=tbody.querySelectorAll('tr');const intData=[];
+  rows.forEach((row,i)=>{const dep=price*(tiers[i].p/100),loan=price-dep,r=+row.querySelector('input').value,M=mp(loan,r,term),int=M*term*12-loan,tot=M*term*12;row.querySelector(`#dm-${i}`).textContent=fmt(M)+'/mo';row.querySelector(`#di-${i}`).textContent=fmt(int);row.querySelector(`#dt-${i}`).textContent=fmt(tot);intData.push(Math.round(int));});
+  const minI=Math.min(...intData),maxI=Math.max(...intData);
+  rows.forEach((row,i)=>{row.className=intData[i]===minI?'hi2':intData[i]===maxI?'wrn':'';});
+  const lbls=tiers.map(t=>t.p+'% deposit');
+  dc('deposit-chart');charts['deposit-chart']=new Chart(document.getElementById('deposit-chart').getContext('2d'),{type:'bar',data:{labels:lbls,datasets:[{data:intData,backgroundColor:intData.map(v=>v===minI?'rgba(26,107,58,.8)':v===maxI?'rgba(192,57,43,.7)':'rgba(26,92,92,.55)'),borderRadius:4,borderWidth:0}]},options:{...bco,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' Total interest: '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('deposit-ins').innerHTML=`<div class="ins-hdr">💡 Key Insight</div>Going from a 5% to a 40% deposit could save you <strong>${fmt(maxI-minI)}</strong> in total interest over ${term} years — before even accounting for the better rate. On a <strong>${fmt(price)}</strong> property, saving an extra 5% deposit (${fmt(price*0.05)}) could save far more in interest than it earns sitting in a savings account. Every LTV band crossed typically unlocks a meaningfully lower rate.`;
+}
+
+// ── ⑪ INFLATION ADJUSTER ────────────────────────────────────────────────────
+function calcInflation(){
+  const P=+document.getElementById('inf-amount').value,r=+document.getElementById('inf-rate').value,y=+document.getElementById('inf-term').value,inf=+document.getElementById('inf-inf').value;
+  if(!P||!r||!y)return;
+  const M=mp(P,r,y),nom=[M],real=[M];
+  for(let yr=1;yr<=y;yr++){nom.push(M);real.push(M/Math.pow(1+inf/100,yr));}
+  const tNom=M*y*12,tReal=nom.reduce((s,_,i)=>i===0?s:s+M/Math.pow(1+inf/100,(i-.5)),0);
+  const midY=Math.floor(y/2),finalReal=M/Math.pow(1+inf/100,y);
+  document.getElementById('inf-stats').innerHTML=`<div class="sc gold"><div class="sl">Monthly Payment</div><div class="sv">${fmt(M)}</div><div class="ss">Fixed for ${y} years</div></div><div class="sc teal"><div class="sl">Real Value (Year ${midY})</div><div class="sv">${fmt(M/Math.pow(1+inf/100,midY))}</div><div class="ss">Today's purchasing power</div></div><div class="sc green"><div class="sl">Real Value (Year ${y})</div><div class="sv">${fmt(finalReal)}</div><div class="ss">What ${fmt(M)} feels like in ${y} yrs</div></div><div class="sc teal"><div class="sl">Total Nominal Cost</div><div class="sv">${fmt(tNom)}</div><div class="ss">What you actually pay</div></div>`;
+  const lbls=Array.from({length:y+1},(_,i)=>'Yr '+i);
+  dc('inf-chart');charts['inf-chart']=new Chart(document.getElementById('inf-chart').getContext('2d'),{type:'line',data:{labels:lbls,datasets:[{label:"Nominal Payment",data:nom,borderColor:'#1a5c5c',borderWidth:2,fill:false,tension:0,pointRadius:0,borderDash:[6,3]},{label:"Real Value (Today's £)",data:real,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:0}]},options:{...bco,plugins:{legend:{display:true,labels:{color:'#0e0e0f',font:{size:12}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  const tyrs=[1,5,10,15,20,25,30].filter(v=>v<=y);
+  document.getElementById('inf-table').innerHTML=tyrs.map(yr=>{const rv=M/Math.pow(1+inf/100,yr),lost=M-rv;return`<tr><td>${yr}</td><td class="mono">${fmt(M)}</td><td class="mono">${fmt(rv)}</td><td class="mono" style="color:var(--muted)">${fmt(lost)}</td><td class="mono">${(rv/M*100).toFixed(1)}%</td></tr>`;}).join('');
+  document.getElementById('inf-ins').innerHTML=`<div class="ins-hdr">💡 The Hidden Benefit of Fixed Payments</div>At <strong>${inf}% inflation</strong>, your <strong>${fmt(M)}/month</strong> payment feels like just <strong>${fmt(finalReal)}/month</strong> in today's purchasing power by year ${y}. Your income grows over time, but your payment stays fixed — inflation is secretly a mortgage holder's friend. In real terms, the mortgage gets <strong>cheaper every single year</strong> without you doing anything. This is one reason long-term fixed rates are powerful in inflationary environments.`;
+}
+
+// ── ⑫ SVR DANGER ZONE ───────────────────────────────────────────────────────
+function calcSVR(){
+  const bal=+document.getElementById('svr-bal').value,svr=+document.getElementById('svr-rate').value,fix=+document.getElementById('svr-fix').value;
+  const trk=+document.getElementById('svr-tracker').value,term=+document.getElementById('svr-term').value,delay=+document.getElementById('svr-delay').value,fee=+document.getElementById('svr-fee').value;
+  if(!bal||!svr||!fix||!term)return;
+  const svrM=mp(bal,svr,term),fixM=mp(bal,fix,term),trkM=mp(bal,trk,term);
+  const svrTI=svrM*term*12-bal,fixTI=fixM*term*12-bal,trkTI=trkM*term*12-bal;
+  // SVR then switch
+  const svrSch=amort(bal,svr,term);
+  const balAD=svrSch[Math.min(delay-1,svrSch.length-1)]?.balance??bal;
+  const intDelay=svrSch.slice(0,delay).reduce((s,m)=>s+m.interest,0);
+  const tad=Math.max(term-delay/12,.5);
+  const fadM=mp(balAD,fix,tad),iad=fadM*tad*12-balAD;
+  const stfTI=intDelay+iad+fee;
+  const extraVsFix=svrTI-(fixTI+fee),delayExtra=stfTI-(fixTI+fee);
+  document.getElementById('svr-stats').innerHTML=`<div class="sc red"><div class="sl">SVR Monthly</div><div class="sv">${fmt(svrM)}</div><div class="ss">vs fix: +${fmt(svrM-fixM)}/mo</div></div><div class="sc teal"><div class="sl">Fix Monthly</div><div class="sv">${fmt(fixM)}</div><div class="ss">Saving ${fmt(svrM-fixM)} vs SVR</div></div><div class="sc gold"><div class="sl">Tracker Monthly</div><div class="sv">${fmt(trkM)}</div><div class="ss">No exit fee — full flexibility</div></div><div class="sc red"><div class="sl">Cost of ${delay}-Month Delay</div><div class="sv">${fmt(Math.max(0,delayExtra))}</div><div class="ss">Extra vs acting immediately</div></div>`;
+  document.getElementById('svr-table').innerHTML=`
+    <tr class="wrn"><td>Stay on SVR (full term)</td><td class="mono">${fmt(svrM)}</td><td class="mono" style="color:var(--red)">${fmt(svrTI)}</td><td class="mono" style="color:var(--red)">+${fmt(extraVsFix)}</td><td>None (no ERC)</td></tr>
+    <tr><td>SVR ${delay} mths, then Fix</td><td class="mono">${fmt(svrM)} → ${fmt(fadM)}</td><td class="mono">${fmt(stfTI)}</td><td class="mono" style="color:${delayExtra>0?'var(--red)':'var(--green)'}">${delayExtra>0?'+':''}${fmt(Math.abs(delayExtra))}</td><td>None</td></tr>
+    <tr class="hi2"><td>Fix immediately (recommended)</td><td class="mono">${fmt(fixM)}</td><td class="mono">${fmt(fixTI)}</td><td class="mono">Baseline</td><td>Yes, if locked in new fix</td></tr>
+    <tr><td>Tracker (no exit fee)</td><td class="mono">${fmt(trkM)}</td><td class="mono">${fmt(trkTI)}</td><td class="mono" style="color:${trkTI<fixTI?'var(--green)':'var(--muted)'}">${fmt(Math.abs(trkTI-fixTI))} ${trkTI<fixTI?'cheaper':'more'}</td><td>None — switch anytime</td></tr>`;
+  // Chart
+  const mos=Math.min(term*12,300),ld=Array.from({length:mos+1},(_,m)=>m%24===0?'Yr '+(m/12):'');
+  let cs=0,cf=fee,ct=fee,cd=0;const svrs=[0],fixs=[fee],trks=[fee],dels=[0];
+  const sF=amort(bal,svr,term),fF=amort(bal,fix,term),tF=amort(bal,trk,term);
+  const adSch=amort(balAD,fix,Math.max(tad,.5));let df=false;
+  for(let m=1;m<=mos;m++){
+    cs+=sF[m-1]?.interest??0;cf+=fF[m-1]?.interest??0;ct+=tF[m-1]?.interest??0;
+    if(m<=delay){cd+=sF[m-1]?.interest??0;}
+    else{if(!df){cd+=fee;df=true;}const bi=m-delay-1;if(bi>=0&&bi<adSch.length)cd+=adSch[bi]?.interest??0;}
+    svrs.push(Math.round(cs));fixs.push(Math.round(cf));trks.push(Math.round(ct));dels.push(Math.round(cd));
+  }
+  dc('svr-chart');charts['svr-chart']=new Chart(document.getElementById('svr-chart').getContext('2d'),{type:'line',data:{labels:ld,datasets:[{label:'SVR (full term)',data:svrs,borderColor:'#c0392b',borderWidth:2.5,fill:false,tension:.1,pointRadius:0},{label:'SVR '+delay+'mths then Fix',data:dels,borderColor:'#c8a84b',borderWidth:2,fill:false,tension:.1,pointRadius:0,borderDash:[5,3]},{label:'Fix immediately',data:fixs,borderColor:'#1a5c5c',borderWidth:2.5,fill:false,tension:.1,pointRadius:0},{label:'Tracker',data:trks,borderColor:'#8e44ad',borderWidth:2,fill:false,tension:.1,pointRadius:0,borderDash:[3,3]}]},options:{...bco,plugins:{legend:{display:true,labels:{color:'#0e0e0f',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}}});
+  document.getElementById('svr-ins').innerHTML=`<div class="ins-hdr">⚠️ SVR Warning — Don't Sit on This</div>The SVR at <strong>${svr}%</strong> costs <strong>${fmt(svrM)}/month</strong> — <strong>${fmt(svrM-fixM)} more than a fixed rate</strong>. Over ${term} years, staying on SVR costs an extra <strong>${fmt(extraVsFix)}</strong> compared to remortgaging immediately. Every month you delay costs approximately <strong>${fmt((svrM-fixM)*delay/delay)}/month</strong> in avoidable interest.<br><br>If you have <strong>no ERC</strong>, there is almost no good reason to stay on SVR. Your two smart options:<br>→ <strong>Fix:</strong> certainty, protection from rate rises, lower rate — but you're locked in.<br>→ <strong>Tracker:</strong> still beats SVR, no exit fee, flexibility to switch or overpay freely.<br><strong>SVR gives you neither certainty nor flexibility</strong> — just a higher rate. Act immediately.`;
+}
+
+// ── Init ────────────────────────────────────────────────────────────────────
+calcTotal();
+</script>
+</body>
+</html>
