@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Mortgage Decoded</title>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WQFXF356');</script>
+<!-- End Google Tag Manager -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0e0e0f; --paper:#f5f0e8; --cream:#ede8dc; --gold:#c8a84b;
+  --teal:#1a5c5c; --muted:#7a7060; --border:#c8bfa8; --white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.75;}
+
+/* HEADER */
+header{background:var(--teal);color:var(--paper);padding:36px 32px 32px;}
+header a.back{color:var(--gold);text-decoration:none;font-size:13px;display:inline-block;margin-bottom:16px;}
+header a.back:hover{text-decoration:underline;}
+header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;margin-bottom:8px;}
+header p{color:rgba(245,240,232,.7);font-size:14px;font-weight:300;max-width:640px;}
+
+/* HERO BANNER */
+.hero{background:linear-gradient(135deg,#0f3535 0%,#1a5c5c 60%,#2a7a5a 100%);padding:48px 32px;text-align:center;}
+.hero h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--paper);margin-bottom:12px;}
+.hero p{color:rgba(245,240,232,.8);font-size:15px;max-width:600px;margin:0 auto 24px;}
+.hero .stat-row{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+.hero .stat{background:rgba(255,255,255,.08);border:1px solid rgba(200,168,75,.3);border-radius:10px;padding:16px 24px;text-align:center;}
+.hero .stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;}
+.hero .stat-label{font-size:12px;color:rgba(245,240,232,.6);margin-top:4px;}
+
+/* LAYOUT */
+.wrap{max-width:800px;margin:0 auto;padding:56px 32px 80px;}
+
+/* SECTION HEADERS */
+.section-label{display:inline-block;background:var(--gold);color:var(--ink);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:4px;margin-bottom:20px;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--teal);margin-bottom:6px;}
+.section-intro{font-size:14.5px;color:var(--muted);margin-bottom:28px;max-width:640px;}
+
+/* FAQ ACCORDION */
+.faq-group{margin-bottom:52px;}
+.faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;background:var(--white);}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--ink);line-height:1.5;}
+.faq-q:hover{background:var(--cream);}
+.faq-q .icon{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--teal);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:300;transition:transform .25s,background .2s;}
+.faq-item.open .faq-q .icon{transform:rotate(45deg);background:var(--teal);color:var(--white);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-item.open .faq-a{max-height:1000px;}
+.faq-a-inner{padding:0 20px 20px;border-top:1px solid var(--border);}
+.faq-a-inner p{font-size:14.5px;color:#2a2825;margin-top:14px;margin-bottom:10px;}
+.faq-a-inner ul{margin:8px 0 12px 20px;}
+.faq-a-inner li{font-size:14px;color:#2a2825;margin-bottom:6px;line-height:1.6;}
+.faq-a-inner .tip{background:rgba(200,168,75,.1);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;font-size:13.5px;margin:12px 0;}
+.faq-a-inner .tip strong{color:var(--teal);}
+.faq-a-inner .warning{background:rgba(26,92,92,.06);border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 6px 6px 0;font-size:13.5px;margin:12px 0;}
+.faq-a-inner a{color:var(--teal);}
+
+/* SCENARIO CARDS */
+.scenario-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.scenario-card h4{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--teal);margin-bottom:8px;}
+.scenario-card .scenario-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);margin-bottom:10px;display:block;}
+.scenario-card p{font-size:14px;color:#2a2825;margin-bottom:8px;}
+.scenario-card .outcome{background:var(--white);border-radius:8px;padding:12px 14px;font-size:13.5px;margin-top:10px;}
+.scenario-card .outcome strong{color:var(--teal);}
+
+/* STAT STRIP */
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+.stat-box{background:var(--teal);color:var(--paper);border-radius:10px;padding:20px 16px;text-align:center;}
+.stat-box .num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);}
+.stat-box .lbl{font-size:12px;color:rgba(245,240,232,.7);margin-top:4px;line-height:1.4;}
+
+/* DIVIDER */
+hr{border:none;border-top:1px solid var(--border);margin:48px 0;}
+
+/* CTA */
+.cta{background:var(--teal);border-radius:14px;padding:36px 32px;text-align:center;margin-top:48px;}
+.cta h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--paper);margin-bottom:10px;}
+.cta p{color:rgba(245,240,232,.75);font-size:14px;margin-bottom:20px;}
+.cta a{display:inline-block;background:var(--gold);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;padding:13px 28px;border-radius:8px;}
+.cta a:hover{opacity:.9;}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(245,240,232,.4);text-align:center;padding:24px;font-size:12px;line-height:1.8;}
+footer a{color:var(--gold);text-decoration:none;opacity:.7;}
+
+@media(max-width:600px){
+  .wrap{padding:32px 18px 60px;}
+  header{padding:24px 18px 20px;}
+  .hero{padding:32px 18px;}
+  .hero h2{font-size:1.4rem;}
+  .hero .stat-row{gap:12px;}
+  .stat-strip{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQFXF356"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header>
+  <div style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;">
+    <a class="back" href="/" style="margin-bottom:0;">← Calculator</a>
+    <a class="back" href="/introduction.html" style="margin-bottom:0;">Why This Site</a>
+    <a class="back" href="/legal.html" style="margin-bottom:0;">Legal</a>
+  </div>
+  <h1>Frequently Asked Questions</h1>
+  <p>Real answers to real questions — helping you understand your mortgage before you sign anything.</p>
+</header>
+
+<div class="hero">
+  <h2>The mortgage is the biggest debt of your life.<br>You deserve to understand it.</h2>
+  <p>Banks and lenders don't always make it easy. This page explains how mortgages really work — in plain English, with real numbers.</p>
+  <div class="stat-row">
+    <div class="stat"><span class="stat-num">£285k</span><span class="stat-label">UK average mortgage (2024)</span></div>
+    <div class="stat"><span class="stat-num">800k+</span><span class="stat-label">households on SVR paying over the odds</span></div>
+    <div class="stat"><span class="stat-num">25 yrs</span><span class="stat-label">typical mortgage term — decisions compound</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — UNDERSTANDING THE CALCULATOR
+  ═══════════════════════════════════════════ -->
+  <div class="faq-group" id="calculator">
+    <span class="section-label">The Calculator</span>
+    <h2 class="section-title">What does each tab do?</h2>
+    <p class="section-intro">Mortgage Decoded has 12 tools built in. Here's what each one helps you understand.</p>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Monthly Payment — what is this actually telling me?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>This is your core mortgage calculator. Enter the loan amount, interest rate and term, and it shows your monthly repayment. The key insight: your payment is almost entirely interest in the early years.</p>
+        <div class="tip"><strong>Try this:</strong> Enter a £250,000 mortgage at 5% over 25 years. Then change the term to 20 years. The monthly payment goes up, but the total interest you pay drops by tens of thousands of pounds.</div>
+        <p>Use this tab first — it gives you the baseline before you explore any of the other tools.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Amortisation — why does this chart look so unfair?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Because it is — at first. Amortisation is how your repayments are split between interest and capital (the actual debt) each month. On a standard repayment mortgage:</p>
+        <ul>
+          <li>In year 1, most of your payment goes to interest — very little reduces the actual debt</li>
+          <li>The balance only starts falling meaningfully after the halfway point</li>
+          <li>By the final years, almost all of your payment goes to capital</li>
+        </ul>
+        <div class="warning">On a £250,000 mortgage at 5% over 25 years, you'll pay roughly £193,000 in interest over the full term. That's nearly as much as the original loan itself.</div>
+        <p>This is why overpaying early is so powerful — every pound off the balance reduces the interest calculated on the remaining debt for every single month ahead.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Overpayment — is it really worth it?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Usually yes — and the numbers are striking. Overpaying your mortgage reduces the outstanding balance, which means less interest is charged each month.</p>
+        <div class="tip"><strong>Real example:</strong> Overpaying just £200/month on a £250,000 mortgage at 5% over 25 years saves around £33,000 in interest and clears the mortgage 4 years early.</div>
+        <ul>
+          <li>Most lenders allow up to 10% of the outstanding balance per year without penalty</li>
+          <li>Always check your mortgage terms before overpaying — early repayment charges (ERCs) may apply within a fixed-rate period</li>
+          <li>Even small regular overpayments compound powerfully over time</li>
+        </ul>
+        <p>The Overpayment tab lets you see exactly how much time and money a specific overpayment amount would save you.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>13th Payment — what is this and why does it matter?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>One of the most powerful and least-known tricks in personal finance. Instead of paying 12 monthly payments a year, you make the equivalent of 13 — by paying half your monthly amount every two weeks (fortnightly).</p>
+        <p>Because there are 52 weeks in a year, fortnightly payments add up to 26 half-payments — which equals 13 full monthly payments. You make one extra full payment every year without it feeling like a lump sum.</p>
+        <div class="tip"><strong>The result:</strong> On a typical 25-year mortgage, this single habit alone can cut 2–3 years off your term and save £15,000–£25,000 in interest.</div>
+        <ul>
+          <li>Check your lender allows fortnightly payments (most do)</li>
+          <li>If not, simply divide your monthly payment by 12 and add that amount as a monthly overpayment — same effect</li>
+          <li>This works because you're reducing the principal slightly faster every single month</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Remortgage — when should I think about switching?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>You should start looking at remortgaging 3–6 months before your current fixed deal ends. The Remortgage tab helps you compare what you're paying now versus what a new deal would cost.</p>
+        <ul>
+          <li>When your fixed term ends, you automatically move to your lender's Standard Variable Rate (SVR) — which is almost always significantly higher</li>
+          <li>Remortgaging to a new deal can save hundreds of pounds per month</li>
+          <li>You can also remortgage to release equity, change your term, or consolidate debts (take professional advice on this)</li>
+        </ul>
+        <div class="tip"><strong>Rule of thumb:</strong> If the new rate saves you more than the product fees and legal costs, it's worth switching. The calculator shows you the break-even point.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Stamp Duty — how does it actually work?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Stamp Duty Land Tax (SDLT) is a tax you pay when buying property in England or Northern Ireland above certain thresholds. It's charged on the portion of the price that falls within each band — not the full price.</p>
+        <ul>
+          <li>First-time buyers get a higher nil-rate threshold (check current HMRC rates as these change)</li>
+          <li>Additional properties (buy-to-let, second homes) pay a surcharge on top</li>
+          <li>You pay SDLT on completion — it's usually arranged by your solicitor</li>
+        </ul>
+        <div class="warning">Stamp Duty thresholds changed in April 2025. Always verify the current rates at <strong>gov.uk/stamp-duty-land-tax</strong> before budgeting.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Affordability — how much can I actually borrow?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Most lenders use income multiples — typically 4 to 4.5 times your annual salary (or combined income for joint applicants). But affordability checks go deeper than that.</p>
+        <ul>
+          <li>Lenders stress-test your ability to repay at higher interest rates (usually 3% above the current rate)</li>
+          <li>They also look at outgoings: credit commitments, childcare, subscriptions, regular spending</li>
+          <li>A mortgage broker can access lenders with more flexible criteria if you're self-employed or have a complex income</li>
+        </ul>
+        <div class="tip"><strong>Important:</strong> The Affordability tab gives you an indicative figure. What a lender will actually offer depends on their own criteria and a full assessment of your finances.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Offset Mortgage — is this worth considering?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>An offset mortgage links your savings account to your mortgage. Instead of earning interest on savings, your savings balance is deducted from your mortgage balance before interest is calculated.</p>
+        <div class="tip"><strong>Example:</strong> £200,000 mortgage, £30,000 in savings → you only pay interest on £170,000. You're effectively earning your mortgage rate on your savings — tax-free.</div>
+        <ul>
+          <li>Most valuable for higher-rate taxpayers who would otherwise pay tax on savings interest</li>
+          <li>Offset mortgages usually have slightly higher interest rates than standard deals</li>
+          <li>You keep access to your savings — they're not locked away</li>
+          <li>Best suited to those with substantial savings they can't use elsewhere</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Interest Only — what's the risk with this type of mortgage?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>An interest-only mortgage means your monthly payment only covers the interest — not the actual debt. At the end of the term, the full loan is still outstanding and you must repay it in one go.</p>
+        <ul>
+          <li>Monthly payments are lower — which is why it's attractive</li>
+          <li>But the balance never reduces unless you make separate capital repayments</li>
+          <li>You need a credible repayment strategy (investment portfolio, property sale, pension lump sum)</li>
+          <li>Lenders now require evidence of your repayment vehicle before approving interest-only</li>
+        </ul>
+        <div class="warning">Tens of thousands of UK homeowners on legacy interest-only mortgages face a "maturity shortfall" — reaching the end of their term without enough to repay the loan. Don't enter one without a clear plan.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Buy-to-Let — how is this different from a residential mortgage?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Buy-to-let (BTL) mortgages are for properties you rent out rather than live in. The key differences:</p>
+        <ul>
+          <li>Deposits are larger — typically 25% minimum</li>
+          <li>Affordability is assessed on rental income, not just your salary</li>
+          <li>Most BTL mortgages are interest-only</li>
+          <li>Stamp Duty surcharge applies (currently 5% extra on top of standard rates — increased from 3% in October 2024)</li>
+          <li>Mortgage interest is no longer fully tax-deductible for most landlords — only a 20% tax credit applies</li>
+        </ul>
+        <div class="tip"><strong>The BTL landscape has changed significantly since 2016.</strong> Anyone considering buy-to-let should model the numbers carefully and take tax advice — it's not the passive income goldmine it once was for many investors.</div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — THE SVR TRAP
+  ═══════════════════════════════════════════ -->
+  <div class="faq-group" id="svr">
+    <span class="section-label">The SVR Trap</span>
+    <h2 class="section-title">Why do so many people get stuck paying too much?</h2>
+    <p class="section-intro">The Standard Variable Rate is one of the most expensive habits in British personal finance. Here's why it happens — and how to avoid it.</p>
+
+    <div class="stat-strip">
+      <div class="stat-box"><div class="num">800k+</div><div class="lbl">UK households currently on SVR</div></div>
+      <div class="stat-box"><div class="num">2–4%</div><div class="lbl">typical SVR premium above competitive deals</div></div>
+      <div class="stat-box"><div class="num">£300</div><div class="lbl">average extra cost per month on SVR vs fixed deal</div></div>
+      <div class="stat-box"><div class="num">6 mths</div><div class="lbl">how early you should start remortgage process</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>What is the SVR and why is it so high?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>The Standard Variable Rate (SVR) is the interest rate your lender charges once your fixed, tracker or discount deal period ends. Unlike the Bank of England base rate, lenders set their own SVR — and they set it high.</p>
+        <ul>
+          <li>SVRs typically run 3–5% above the base rate</li>
+          <li>They can change at any time at the lender's discretion</li>
+          <li>There's usually no tie-in or early repayment charge on SVR — so you can leave anytime</li>
+        </ul>
+        <div class="warning">The SVR is not a reward for loyal customers. It is the default rate lenders rely on to recoup margin from people who don't actively manage their mortgage.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Why do people end up on SVR if it's so expensive?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Life gets busy. The fixed deal ends quietly, no alarm goes off, and the mortgage just rolls onto SVR. Many people don't notice the rate change for months — or longer.</p>
+        <ul>
+          <li>Lenders are required to write to you before your deal ends — but the letters are easy to miss</li>
+          <li>Some people assume remortgaging is complicated or expensive, so they don't bother</li>
+          <li>Others mean to do it but keep putting it off</li>
+          <li>In rising rate environments, some people feel paralysed and do nothing</li>
+        </ul>
+        <div class="tip"><strong>Set a reminder.</strong> 6 months before your fixed rate ends, start comparing deals. Applications often take 2–3 months to complete, so earlier is safer.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Real scenario: how much does staying on SVR actually cost?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Let's make it concrete. Meet Sarah:</p>
+        <div class="scenario-card" style="background:var(--paper);margin:0;">
+          <span class="scenario-label">📍 Real-World Scenario</span>
+          <h4>Sarah's £180,000 mortgage</h4>
+          <p>Sarah's 5-year fixed rate (2.1%) ends. She means to remortgage but gets distracted. She rolls onto SVR at 7.5% for 18 months before finally switching to a new 5-year fix at 4.9%.</p>
+          <div class="outcome">
+            <strong>Extra interest paid on SVR vs a competitive deal:</strong> approximately £4,500 over 18 months — for doing nothing.<br><br>
+            <strong>The fix:</strong> Setting a calendar reminder 6 months before deal expiry would have saved her the entire amount.
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3 — REAL WORLD SCENARIOS
+  ═══════════════════════════════════════════ -->
+  <div class="faq-group" id="scenarios">
+    <span class="section-label">Real-World Scenarios</span>
+    <h2 class="section-title">What does this look like in practice?</h2>
+    <p class="section-intro">Numbers on a screen become real when you recognise yourself in the story.</p>
+
+    <div class="scenario-card">
+      <span class="scenario-label">🏠 First-Time Buyer</span>
+      <h4>James & Priya buy their first home</h4>
+      <p>£320,000 purchase price, 10% deposit (£32,000), £288,000 mortgage, 5.2% fixed for 2 years, 30-year term.</p>
+      <p>Their monthly payment is £1,577. Over 2 years they pay £37,848 — of which approximately £27,500 is interest and around £10,300 reduces the actual debt.</p>
+      <div class="outcome">
+        <strong>What the calculator shows them:</strong> If they overpay £150/month from month one, they'll save £22,000 in interest over the full term and clear the mortgage 2 years early. That's £150/month now, versus 2 extra years of payments later.
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <span class="scenario-label">🔄 Remortgager</span>
+      <h4>David's fixed rate ends next month</h4>
+      <p>£195,000 outstanding. Current rate: 1.89% fixed (taken in 2021). New deal options: 4.85% fixed 2 years or 5.2% fixed 5 years. SVR if he does nothing: 7.9%.</p>
+      <div class="outcome">
+        <strong>Monthly payment comparison:</strong><br>
+        SVR (7.9%): £1,451 | 5-yr fix (5.2%): £1,155 | Difference: £296/month<br><br>
+        <strong>Staying on SVR for 12 months</strong> = £3,552 wasted. The remortgage costs (product fee £999) pay for themselves in under 4 months.
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <span class="scenario-label">💰 The Overpayer</span>
+      <h4>Maria pays £100 extra a month — every month</h4>
+      <p>£220,000 mortgage, 4.9% rate, 25-year term. Monthly payment: £1,270. She adds £100 every month from the start.</p>
+      <div class="outcome">
+        <strong>Without overpaying:</strong> Total interest = £161,000. Term = 25 years.<br>
+
+        <strong>With £100/month extra:</strong> Total interest = £142,000. Term = 22 years 7 months.<br><br>
+        <strong>£100/month saved her approximately £19,000 and over 2 years.</strong> She never felt the £100 — but she'll feel those extra years of freedom.
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <span class="scenario-label">📅 The 13th Payment</span>
+      <h4>Ahmed switches to fortnightly payments</h4>
+      <p>£250,000 mortgage, 5% rate, 25-year term. Monthly payment: £1,461. He switches to paying £730.50 every two weeks.</p>
+      <div class="outcome">
+        <strong>The maths:</strong> 26 fortnightly payments = 13 full monthly payments per year instead of 12.<br>
+        <strong>The result:</strong> Mortgage cleared in approximately 22 years instead of 25. Interest saving: ~£18,000.<br><br>
+        He didn't change his spending — he just changed the rhythm.
+      </div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 — GENERAL MORTGAGE QUESTIONS
+  ═══════════════════════════════════════════ -->
+  <div class="faq-group" id="general">
+    <span class="section-label">General Questions</span>
+    <h2 class="section-title">Mortgage basics, explained plainly</h2>
+    <p class="section-intro">No jargon. No assumptions. Just the answers you should have been given already.</p>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>What's the difference between a fixed rate and a tracker?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>A <strong>fixed rate</strong> locks your interest rate for a set period — usually 2, 3 or 5 years. Your payment doesn't change regardless of what happens to interest rates. Certainty and peace of mind.</p>
+        <p>A <strong>tracker mortgage</strong> follows the Bank of England base rate plus a set margin (e.g. base rate + 1%). When the base rate goes up, your payment goes up. When it falls, you benefit.</p>
+        <ul>
+          <li>Fixed = certainty, but you won't benefit if rates fall</li>
+          <li>Tracker = flexibility and potential savings, but exposure to rate rises</li>
+          <li>Tracker mortgages often have lower early repayment charges</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Should I take a 2-year or 5-year fixed rate?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>There's no universal right answer — it depends on your circumstances and view on rates. Here's how to think about it:</p>
+        <ul>
+          <li><strong>2-year fix:</strong> Lower initial rate in some environments, more flexibility to remortgage sooner, but you face renewal risk in 2 years</li>
+          <li><strong>5-year fix:</strong> Longer certainty, fewer remortgage costs over time, but you're locked in if your circumstances change (selling, moving, changing jobs)</li>
+        </ul>
+        <div class="tip"><strong>Key question:</strong> Are you likely to move, need to change the mortgage significantly, or sell within 5 years? If yes, a shorter fix may suit you better. If stability matters most, 5 years gives you that.</div>
+        <p>A qualified mortgage adviser can model both scenarios with your actual numbers. Always ask to see the total cost over the comparison period, not just the monthly payment.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>What are early repayment charges (ERCs) and how do I avoid them?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>An ERC is a penalty charged by your lender if you pay off your mortgage — or a large chunk of it — during the fixed or discounted rate period. It's how lenders protect the income they were counting on.</p>
+        <ul>
+          <li>ERCs are typically 1–5% of the outstanding balance, reducing year by year through the deal period</li>
+          <li>Most lenders allow 10% of the outstanding balance per year in overpayments without triggering an ERC</li>
+          <li>ERCs don't apply once you're on the SVR</li>
+        </ul>
+        <div class="warning">Always check your mortgage offer document for the exact ERC terms before making a large overpayment or remortgaging early. A £5,000 ERC can wipe out the savings from switching to a better rate.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Do I need a mortgage broker, or can I go direct to a lender?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>You can go direct — but a whole-of-market broker often gets you a better outcome, especially if your situation is anything other than very straightforward.</p>
+        <ul>
+          <li>Brokers access deals not always available direct to consumers</li>
+          <li>They do the paperwork and liaise with the lender on your behalf</li>
+          <li>For complex income (self-employed, multiple jobs, recent credit issues), a broker knows which lenders are most likely to approve you</li>
+          <li>Many brokers are free to you — they're paid by the lender (though some charge a fee)</li>
+        </ul>
+        <div class="tip">Look for a broker who is FCA-regulated and offers "whole of market" access — meaning they can recommend products from across all lenders, not just a panel.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>How does my credit score affect my mortgage?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Your credit history is one of the biggest factors in whether you're approved and what rate you're offered. Lenders use it to assess how reliably you repay debts.</p>
+        <ul>
+          <li>Missed payments, defaults or CCJs can significantly limit your options and push up rates</li>
+          <li>You don't need a perfect score — but knowing where you stand before applying is important</li>
+          <li>Check your credit report for free at Experian, Equifax or TransUnion before applying</li>
+          <li>Correct any errors — they're more common than you'd think</li>
+          <li>Avoid applying for multiple mortgages in quick succession — each hard search can dent your score</li>
+        </ul>
+        <div class="tip">A mortgage broker can advise on which lenders are more flexible on credit history — saving you from wasted applications that damage your score further.</div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>What's a Loan-to-Value (LTV) ratio and why does it matter?</span><span class="icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>LTV is the size of your mortgage as a percentage of the property value. It's one of the most important numbers in mortgage pricing.</p>
+        <div class="tip"><strong>Example:</strong> Property worth £300,000, mortgage of £240,000 → LTV = 80%</div>
+        <ul>
+          <li>Lower LTV = less risk for the lender = better interest rates for you</li>
+          <li>Rates typically improve at 90%, 85%, 80%, 75%, 70%, 65% and 60% LTV thresholds</li>
+          <li>If your property has risen in value since you bought it, your LTV may have improved — check before remortgaging</li>
+          <li>Overpayments reduce your balance, which also improves your LTV over time</li>
+        </ul>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>Ready to run the numbers yourself?</h3>
+    <p>Use the free Mortgage Decoded calculator — 12 tools in one place, no sign-up required.</p>
+    <a href="/">Open the Calculator →</a>
+  </div>
+
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:28px;line-height:1.7;">
+    The information on this page is for educational purposes only and does not constitute financial advice.<br>
+    Always consult a qualified, FCA-regulated mortgage adviser before making financial decisions.<br>
+    <a href="/legal" style="color:var(--teal);">Full disclaimer and legal information →</a>
+  </p>
+
+</div>
+
+<footer>
+  <p>&copy; <script>document.write(new Date().getFullYear())</script> Mortgage Decoded. All rights reserved.</p>
+  <p style="margin-top:6px">
+    <a href="/">Calculator</a> &nbsp;·&nbsp;
+    <a href="/faq">FAQ</a> &nbsp;·&nbsp;
+    <a href="/legal">Legal</a>
+  </p>
+</footer>
+
+<script>
+// Accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    // close all in same group
+    btn.closest('.faq-group').querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+
+</body>
+</html>

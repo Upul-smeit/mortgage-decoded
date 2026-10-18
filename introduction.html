@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Mortgage Decoded — Understanding Your Mortgage</title>
+<meta name="description" content="Mortgage Decoded exists to bridge the knowledge gap between what consumers know and what they need to know to make informed mortgage decisions.">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WQFXF356');</script>
+<!-- End Google Tag Manager -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0e0e0f; --paper:#f5f0e8; --cream:#ede8dc; --gold:#c8a84b;
+  --teal:#1a5c5c; --muted:#7a7060; --border:#c8bfa8; --white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.8;}
+
+/* NAV */
+nav{background:var(--teal);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+nav .logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);text-decoration:none;font-weight:700;}
+nav .nav-links{display:flex;gap:24px;list-style:none;}
+nav .nav-links a{color:rgba(245,240,232,.75);text-decoration:none;font-size:13.5px;font-weight:400;transition:color .2s;}
+nav .nav-links a:hover,nav .nav-links a.active{color:var(--gold);}
+
+/* HERO */
+.hero{background:linear-gradient(150deg,#081e1e 0%,#0f3535 45%,#1a5c5c 100%);padding:88px 32px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a84b' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.hero-inner{position:relative;max-width:760px;margin:0 auto;}
+.hero-tag{display:inline-block;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.35);color:var(--gold);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;padding:5px 16px;border-radius:20px;margin-bottom:28px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);color:var(--paper);line-height:1.2;margin-bottom:24px;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero .lede{font-size:1.05rem;color:rgba(245,240,232,.75);max-width:580px;margin:0 auto 40px;line-height:1.9;font-weight:300;}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;padding:14px 28px;border-radius:8px;transition:opacity .2s;}
+.btn-primary:hover{opacity:.88;}
+.btn-ghost{background:transparent;color:var(--paper);text-decoration:none;font-weight:500;font-size:14px;padding:14px 28px;border-radius:8px;border:1.5px solid rgba(245,240,232,.3);transition:border-color .2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* CONTENT */
+.wrap{max-width:760px;margin:0 auto;padding:72px 32px 96px;}
+
+/* PULL QUOTE */
+.pull-quote{border-left:4px solid var(--gold);padding:20px 28px;margin:40px 0;background:var(--cream);border-radius:0 10px 10px 0;}
+.pull-quote p{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--teal);line-height:1.6;font-style:italic;}
+
+/* SECTION */
+.section{margin-bottom:60px;}
+.section-badge{display:inline-block;background:var(--gold);color:var(--ink);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:4px 12px;border-radius:4px;margin-bottom:16px;}
+.section h2{font-family:'Playfair Display',serif;font-size:1.65rem;color:var(--teal);margin-bottom:18px;line-height:1.3;}
+.section p{color:#2a2825;font-size:15.5px;line-height:1.85;margin-bottom:16px;}
+.section p:last-child{margin-bottom:0;}
+
+/* CALLOUT BOX */
+.callout{background:rgba(26,92,92,.06);border:1px solid rgba(26,92,92,.15);border-radius:12px;padding:28px 32px;margin:32px 0;}
+.callout h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--teal);margin-bottom:12px;}
+.callout p{font-size:14.5px;color:#2a2825;line-height:1.8;margin-bottom:10px;}
+.callout p:last-child{margin-bottom:0;}
+
+/* WARNING CALLOUT */
+.callout-gold{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.3);border-radius:12px;padding:28px 32px;margin:32px 0;}
+.callout-gold h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:#7a5c10;margin-bottom:12px;}
+.callout-gold p{font-size:14.5px;color:#3a2e10;line-height:1.8;margin-bottom:10px;}
+.callout-gold p:last-child{margin-bottom:0;}
+
+/* QUESTION LIST */
+.question-list{list-style:none;margin:24px 0;}
+.question-list li{padding:12px 16px 12px 44px;position:relative;font-size:15px;color:#2a2825;border-bottom:1px solid var(--border);line-height:1.6;}
+.question-list li:last-child{border-bottom:none;}
+.question-list li::before{content:'?';position:absolute;left:12px;top:13px;width:22px;height:22px;background:var(--teal);color:var(--paper);border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:22px;}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:56px 0;}
+
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:32px 0;}
+.pillar{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 20px;}
+.pillar .icon{font-size:1.6rem;margin-bottom:12px;}
+.pillar h4{font-family:'Playfair Display',serif;font-size:1rem;color:var(--teal);margin-bottom:8px;}
+.pillar p{font-size:13.5px;color:var(--muted);line-height:1.65;}
+
+/* CTA BLOCK */
+.cta-block{background:var(--teal);border-radius:16px;padding:48px 40px;text-align:center;margin-top:64px;}
+.cta-block h2{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--paper);margin-bottom:14px;}
+.cta-block p{color:rgba(245,240,232,.75);font-size:15px;max-width:520px;margin:0 auto 28px;line-height:1.8;}
+.cta-block .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* DISCLAIMER */
+.disclaimer{background:var(--cream);border-radius:10px;padding:20px 24px;margin-top:48px;font-size:13px;color:var(--muted);line-height:1.7;}
+.disclaimer strong{color:var(--ink);}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(245,240,232,.4);text-align:center;padding:28px 24px;font-size:12px;line-height:2;}
+footer a{color:var(--gold);text-decoration:none;opacity:.7;}
+footer a:hover{opacity:1;}
+
+@media(max-width:600px){
+  nav{padding:0 18px;}
+  nav .nav-links{gap:14px;}
+  .hero{padding:60px 20px 56px;}
+  .wrap{padding:48px 20px 72px;}
+  .cta-block{padding:36px 24px;}
+  .pull-quote{padding:16px 20px;}
+  .pull-quote p{font-size:1.05rem;}
+}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQFXF356"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav>
+  <a class="logo" href="/">Mortgage Decoded</a>
+  <ul class="nav-links">
+    <li><a href="/">Calculator</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/introduction.html" class="active">Why This Site</a></li>
+    <li><a href="/legal.html">Legal</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">About Mortgage Decoded</span>
+    <h1>Understanding your mortgage<br>is <em>your responsibility</em> too.</h1>
+    <p class="lede">A mortgage is likely the largest financial commitment of your life — and most people sign one without fully understanding what they have agreed to. Mortgage Decoded exists to change that.</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="/">Open the Calculator</a>
+      <a class="btn-ghost" href="/faq.html">Read the FAQ</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CONTENT
+════════════════════════════════════════════════ -->
+<div class="wrap">
+
+  <!-- SECTION 1: The landscape -->
+  <div class="section">
+    <span class="section-badge">The landscape</span>
+    <h2>The UK mortgage market is well-regulated. And yet.</h2>
+    <p>Lenders are authorised and supervised by the Financial Conduct Authority. Mortgage advisers are qualified, regulated and accountable. The system has more consumer protections than it has ever had.</p>
+    <p>And yet, most people who sign a mortgage agreement do not fully understand what they have signed.</p>
+    <p>This is not a failure of the regulatory system. It is a consequence of a knowledge gap that has always existed — and that no one currently has an obvious incentive to close.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 2: Why the gap persists -->
+  <div class="section">
+    <span class="section-badge">Why the gap persists</span>
+    <h2>Advisers advise. They don't always educate.</h2>
+    <p>A mortgage adviser's professional and regulatory obligation is to assess your affordability, explain the product you are taking, and ensure any advice given is suitable for your circumstances. They are trained, qualified and accountable. When they fall short of those obligations, the FCA provides a clear framework for redress.</p>
+    <p>But their job is to advise you on your mortgage — not to comprehensively educate you about mortgage finance. These are different things.</p>
+    <p>The result is that consumers routinely receive the information required to make a decision, without the broader context that would allow them to make the <em>best</em> decision.</p>
+
+    <div class="callout">
+      <h3>The irony worth noting</h3>
+      <p>The mortgage is almost certainly the largest debt you will ever carry — potentially 25, 30 or even 40 years of your financial life. And most people enter it knowing less about it than they know about their car, their pension, or their mobile phone contract.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 3: The questions you don't know to ask -->
+  <div class="section">
+    <span class="section-badge">The knowledge gap</span>
+    <h2>You cannot ask questions you don't know to ask.</h2>
+    <p>This is the fundamental problem. Financial literacy around mortgages is not about being clever or financially sophisticated. It is about knowing enough to ask the right questions at the right time.</p>
+
+    <div class="pull-quote">
+      <p>"People cannot ask the right questions if they do not know what they do not know."</p>
+    </div>
+
+    <p>Questions like these are not advanced. But you can only ask them if you already know they matter:</p>
+
+    <ul class="question-list">
+      <li>What is the <strong>total cost</strong> of this mortgage over its full term — not the monthly payment, the total?</li>
+      <li>What happens when my fixed rate ends and <strong>I do nothing</strong>?</li>
+      <li>How much does extending my term by five years <strong>actually cost</strong> me in interest?</li>
+      <li>Is overpaying by £100 a month meaningfully different from <strong>not overpaying</strong>?</li>
+      <li>What is an SVR, and why should I know about it <strong>before</strong> my deal expires?</li>
+      <li>Would an offset mortgage <strong>suit my situation</strong> — and how would I even know?</li>
+      <li>What does my <strong>amortisation schedule</strong> actually look like over 25 years?</li>
+    </ul>
+
+    <p>These are not trick questions. They are the questions that determine whether your mortgage works for you — or whether you simply pay more than you need to, for longer than you need to, without ever realising it.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 4: Personal responsibility -->
+  <div class="section">
+    <span class="section-badge">Shared responsibility</span>
+    <h2>When things go wrong, the responsibility is not always one-sided.</h2>
+    <p>It is important to say something that is rarely said plainly.</p>
+    <p>Poor advice — a product recommendation that doesn't suit your circumstances, an affordability assessment that wasn't properly conducted, a material risk that was never explained — is a professional failing. Advisers and lenders are accountable for that, and there are mechanisms for redress.</p>
+    <p>But many of the costly mortgage mistakes that happen in the UK every year are not the result of bad advice. They are the result of a lack of personal engagement with one of the most consequential financial decisions a person makes.</p>
+
+    <div class="callout-gold">
+      <h3>The costs of not engaging</h3>
+      <p>Staying on a Standard Variable Rate for two years because you didn't realise your fixed deal had ended costs real money — and no adviser failed you.</p>
+      <p>Taking a 35-year term without understanding how much extra interest you pay compared to 25 years is a decision made without information that was available to find.</p>
+      <p>Never overpaying even modestly, unaware of how significantly it would have reduced your total debt, is an opportunity lost — not a wrong done to you.</p>
+    </div>
+
+    <p>This is not about blame. Many people are navigating genuine financial pressure, competing demands on their time, and a mortgage industry that does not always communicate clearly. The system could serve consumers better than it does.</p>
+    <p>But awareness of your own responsibility — and a commitment to engaging with it — is something only you can bring to the table. It is the starting point for every good financial decision.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 5: What this site is -->
+  <div class="section">
+    <span class="section-badge">What Mortgage Decoded is</span>
+    <h2>Free, independent, and completely without agenda.</h2>
+    <p>Mortgage Decoded is an education platform. There is nothing to buy, no adviser to speak to, and no financial relationship with any lender, broker or financial services firm. We are not FCA-regulated and we do not provide financial advice.</p>
+    <p>What we do provide is context — the foundation of understanding that means when you sit across from a mortgage adviser, or compare deals online, you are not starting from zero.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon">📊</div>
+        <h4>12 Calculators</h4>
+        <p>Explore your mortgage from every angle — total cost, amortisation, overpayments, remortgage, stamp duty, offset, BTL and more.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">❓</div>
+        <h4>Honest FAQ</h4>
+        <p>Plain-English answers to the questions that often go unasked — with real numbers and no jargon.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">🎯</div>
+        <h4>No Agenda</h4>
+        <p>No ads, no referrals, no commission. Education for its own sake, because informed borrowers make better decisions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 6: The mission -->
+  <div class="section">
+    <span class="section-badge">The mission</span>
+    <h2>Before your next mortgage conversation.</h2>
+    <p>Use these tools before you speak to a lender or an adviser. Not to make the decision for you — they can't, and they shouldn't. But to arrive at that conversation with a foundation.</p>
+    <p>Know what your monthly payment actually consists of. Know what happens to your total debt over time. Understand what your options are if rates change. Know what questions to ask about ERCs, about LTV, about whether your repayment vehicle will actually cover your balance if you're on interest-only.</p>
+    <p>You will ask better questions. Better questions lead to better decisions. And over the lifetime of a mortgage, better decisions are worth tens of thousands of pounds.</p>
+
+    <div class="pull-quote">
+      <p>"The mortgage is not the bank's problem to manage over 25 years. It's yours. Mortgage Decoded exists so you can manage it well."</p>
+    </div>
+  </div>
+
+  <!-- CTA BLOCK -->
+  <div class="cta-block">
+    <h2>Start exploring your mortgage</h2>
+    <p>Free, independent tools that help you understand your mortgage before you make any decisions.</p>
+    <div class="links">
+      <a class="btn-primary" href="/">Open the Calculator</a>
+      <a class="btn-ghost" href="/faq.html">Read the FAQ</a>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Important:</strong> Mortgage Decoded is not authorised or regulated by the Financial Conduct Authority. All content on this website is for educational and informational purposes only and does not constitute financial advice. Figures used in examples are illustrative only. Always consult a qualified, FCA-regulated mortgage adviser before making any mortgage or financial decisions. If you believe you have received unsuitable advice from a regulated firm, you can contact the <a href="https://www.fca.org.uk" target="_blank" rel="noopener">Financial Conduct Authority</a> or the <a href="https://www.financial-ombudsman.org.uk" target="_blank" rel="noopener">Financial Ombudsman Service</a>.
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2024 Mortgage Decoded &nbsp;·&nbsp; <a href="/legal.html">Legal & Privacy</a> &nbsp;·&nbsp; <a href="/faq.html">FAQ</a> &nbsp;·&nbsp; <a href="mailto:info@mortgagedecoded.co.uk">info@mortgagedecoded.co.uk</a></p>
+  <p style="margin-top:6px;">Educational resource only — not financial advice. Not FCA regulated.</p>
+</footer>
+
+<script>
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>
